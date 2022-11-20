@@ -1,0 +1,8 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WeVolunteer.Infrastructure.Data.Entities.Account
+@using WeVolunteer.Infrastructure.Data.Entities
+@inject SignInManager<User> SignInManager;
+@inject UserManager<User> UserManager;
+@if (SignInManager.IsSignedIn(User)){
+   <li class="footer-menu-item"><a asp-controller="User" asp-action="SignUp" class="footer-menu-link">Become a volunteer</a></li>
+}

@@ -8,11 +8,72 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\images\1.jpg" />
+    <Content Remove="wwwroot\images\2.jpg" />
+    <Content Remove="wwwroot\images\3.jpg" />
+    <Content Remove="wwwroot\images\4.jpg" />
+    <Content Remove="wwwroot\images\5.jpg" />
+    <Content Remove="wwwroot\images\Organization.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.2.2" />
+    <PackageReference Include="HtmlSanitizer" Version="8.0.601" />
+    <PackageReference Include="jQuery" Version="3.6.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="toastr" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WeVolunteer.Core\WeVolunteer.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\User\Login.cshtml" />
+    <None Include="Views\User\Register.cshtml" />
+    <None Include="wwwroot\bootstrap\fonts\bootstrap-icons.woff2" />
+    <None Include="wwwroot\bootstrap\fonts\Metropolis\.DS_Store" />
+    <None Include="wwwroot\bootstrap\fonts\Metropolis\Metropolis-Bold.woff2" />
+    <None Include="wwwroot\bootstrap\fonts\Metropolis\Metropolis-Light.woff2" />
+    <None Include="wwwroot\bootstrap\fonts\Metropolis\Metropolis-Regular.woff2" />
+    <None Include="wwwroot\bootstrap\fonts\Metropolis\Metropolis-SemiBold.woff2" />
+    <None Include="wwwroot\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\bootstrap\js\click-scroll.js" />
+    <None Include="wwwroot\bootstrap\js\counter.js" />
+    <None Include="wwwroot\bootstrap\js\custom.js" />
+    <None Include="wwwroot\bootstrap\js\jquery.min.js" />
+    <None Include="wwwroot\bootstrap\js\jquery.sticky.js" />
+    <None Include="wwwroot\images\4.jpg" />
+    <None Include="wwwroot\images\3.jpg" />
+    <None Include="wwwroot\images\2.jpg" />
+    <None Include="wwwroot\images\Organization.jpg" />
+    <None Include="wwwroot\images\1.jpg" />
+    <None Include="wwwroot\images\5.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\" />
+    <Folder Include="wwwroot\lib\toastr\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,40 @@
+﻿@model UserLoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <form class="custom-form volunteer-form mb-5 mb-lg-0" action="#" method="post" role="form">
+                <h2 class="mb-4">@ViewData["Title"]</h2>
+                <h3 class="mb-4">Continue to contribute to the world</h3>
+
+                <div class="col">
+                    <input type="text" class="form-control" id="volunteer-name" autocomplete="email" aria-required="true" placeholder="Email" asp-for="@Model.Email" />
+                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                </div>
+
+                <div class="col">
+                    <input type="password" class="form-control" id="volunteer-password" autocomplete="password" aria-required="true" placeholder="Password" asp-for="@Model.Password" />
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="form-control">Login</button>                
+            </form>
+        </div>
+        <div class="col">         
+            <div class="col">
+                <img src="~/bootstrap/images/icons/become-volunteer-gradient.png" class="volunteer-image" alt="">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
