@@ -1,9 +1,10 @@
 ﻿using WeVolunteer.Infrastructure.Data.Entities;
 
-namespace WeVolunteer.Models.Cause
+namespace WeVolunteer.Core.Models.Cause
 {
-    public class CauseAllViewModel
+    public class CauseViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Place { get; set; }
         public DateTime Time { get; set; }

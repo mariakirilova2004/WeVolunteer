@@ -6,7 +6,7 @@ using System.Text;
 using WeVolunteer.Core.Constants;
 using WeVolunteer.Core.Services.User;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
-using WeVolunteer.Models.User;
+using WeVolunteer.Core.Models.User;
 
 namespace WeVolunteer.Controllers
 {

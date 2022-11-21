@@ -15,11 +15,22 @@ namespace WeVolunteer.Controllers
         {
             this.causeService = _causeService;
         }
-        public IActionResult All([FromQuery] List<CauseAllViewModel> listOfCauses)
+        public IActionResult All([FromQuery] AllCausesQueryModel query)
         {
-            var result = this.causeService.GetAllCauses();
+            var queryResult = this.causeService.All(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllCausesQueryModel.CausesPerPage);
 
-            return View(result);
+            query.TotalCausesCount = queryResult.TotalCausesCount;
+            query.Causes = queryResult.Causes;
+
+            var causeCategories = this.causeService.AllCategoriesNames();
+            query.Categories = causeCategories;
+
+            return View(query);
         }
     }
 }

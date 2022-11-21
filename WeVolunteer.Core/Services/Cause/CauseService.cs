@@ -23,24 +23,72 @@ namespace WeVolunteer.Core.Services.Cause
             this.repository = _repository;
         }
 
-        public List<CauseAllViewModel> GetAllCauses()
+        public AllCausesQueryModel All(string category = null,
+                                          string searchTerm = null,
+                                          CauseSorting sorting = CauseSorting.Newest,
+                                          int currentPage = 1,
+                                          int causesPerPage = 1)
         {
-            return context.Causes.Select(c =>
-                new CauseAllViewModel
+            var causesQuery = repository.All<Infrastructure.Data.Entities.Cause>();
+
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                causesQuery = repository
+                    .All<Infrastructure.Data.Entities.Cause>(h => h.Categories.Any(c => c.Name == category));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                causesQuery = causesQuery.Where(h =>
+                    h.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                    h.Place.ToLower().Contains(searchTerm.ToLower()) ||
+                    h.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            causesQuery = sorting switch
+            {
+                CauseSorting.Latest => causesQuery
+                    .OrderBy(c => c.Time),
+                CauseSorting.Active => causesQuery
+                    .Where(c => c.Time > DateTime.Now)
+                    .OrderBy(c => c.Time),
+                _ => causesQuery.OrderByDescending(c => c.Id)
+            };
+
+            var causes = causesQuery
+                .Skip((currentPage - 1) * causesPerPage)
+                .Take(causesPerPage)
+                .Select(c => new CauseViewModel
                 {
                     Id = c.Id,
                     Name = c.Name,
                     Place = c.Place,
                     Time = c.Time,
                     Description = c.Description,
-                    Photo = c.Photos.First()
+                    Photo = c.Photos.FirstOrDefault()
                 })
                 .ToList();
+
+            var totalCauses = causesQuery.Count();
+
+            return new AllCausesQueryModel()
+            {
+                TotalCausesCount = totalCauses,
+                Causes = causes
+            };
+        }
+
+        public IEnumerable<string> AllCategoriesNames()
+        {
+            return this.repository.All<Category>()
+                        .Select(c => c.Name)
+                        .Distinct()
+                        .ToList();
         }
 
         public List<PhotoCause> GetPhotosByCauseId(int id)
         {
-            return this.context.PhotosCauses.Where(pe => pe.CauseId == id).ToList();
+            return repository.All<PhotoCause>(pe => pe.CauseId == id).ToList();
         }
     }
 }

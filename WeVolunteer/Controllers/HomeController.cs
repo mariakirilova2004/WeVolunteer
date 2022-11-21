@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using WeVolunteer.Models;
+using WeVolunteer.Core.Models;
 
 namespace WeVolunteer.Controllers
 {

@@ -12,6 +12,12 @@ namespace WeVolunteer.Core.Services.Cause
     {
         List<PhotoCause> GetPhotosByCauseId(int id);
 
-        List<CauseAllViewModel> GetAllCauses();
+        AllCausesQueryModel All(string category = null,
+                                          string searchTerm = null,
+                                          CauseSorting sorting = CauseSorting.Newest,
+                                          int currentPage = 1,
+                                          int causesPerPage = 1);
+
+        IEnumerable<string> AllCategoriesNames();
     }
 }
