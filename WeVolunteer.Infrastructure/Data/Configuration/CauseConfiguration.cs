@@ -30,7 +30,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Categories = new List<Category>()
+                CategoryId = 3
             };
 
             causes.Add(cause1);
@@ -44,7 +44,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Categories = new List<Category>()
+                CategoryId = 4
             };
 
             causes.Add(cause2);
@@ -58,7 +58,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Categories = new List<Category>()
+                CategoryId = 1
             };
 
             causes.Add(cause3);
@@ -72,7 +72,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Categories = new List<Category>() 
+                CategoryId = 2
             };
 
             causes.Add(cause4);

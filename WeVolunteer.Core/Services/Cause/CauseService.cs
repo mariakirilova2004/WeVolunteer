@@ -34,7 +34,7 @@ namespace WeVolunteer.Core.Services.Cause
             if (!string.IsNullOrWhiteSpace(category))
             {
                 causesQuery = repository
-                    .All<Infrastructure.Data.Entities.Cause>(h => h.Categories.Any(c => c.Name == category));
+                    .All<Infrastructure.Data.Entities.Cause>(h => h.Category.Name == category);
             }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))

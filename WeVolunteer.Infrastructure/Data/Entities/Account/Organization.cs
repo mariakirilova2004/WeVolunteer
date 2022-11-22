@@ -46,9 +46,14 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         public List<Cause> Causes { get; set; } = new List<Cause>();
 
         /// <summary>
-        /// Contains the main user of the organization
+        /// Contains the user of the cause
         /// </summary>
         [Required]
+        public User? User { get; set; }
+        /// <summary>
+        /// Contains the Id of the user of the organization
+        /// </summary>
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
     }
 }

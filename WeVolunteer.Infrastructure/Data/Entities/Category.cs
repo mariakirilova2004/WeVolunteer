@@ -24,5 +24,10 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         [Required]
         [StringLength(CategoryMaxLengthDescription, MinimumLength = CategoryMinLengthDescription)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Contains the causes'references to the category it is helping to
+        /// </summary>
+        public List<Cause> Causes { get; set; } = new List<Cause>();
     }
 }

@@ -11,7 +11,6 @@ using WeVolunteer.Core.Models.User;
 namespace WeVolunteer.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<User> userManager;

@@ -24,7 +24,8 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             {
                 Id = 1,
                 Name = "Environmental Work",
-                Description = "Permaculture Projects, Farming, Ecovillages and Environmental Conservation"
+                Description = "Permaculture Projects, Farming, Ecovillages and Environmental Conservation",
+               
             };
 
             categories.Add(category1);
