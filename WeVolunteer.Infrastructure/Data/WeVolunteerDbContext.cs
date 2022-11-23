@@ -25,8 +25,8 @@ namespace WeVolunteer.Infrastructure.Data
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new PhotoCauseConfiguration());
-            modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
+            modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new CauseConfiguration());
 

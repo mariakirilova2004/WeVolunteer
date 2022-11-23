@@ -22,11 +22,11 @@
                         <input type="text" class="form-control" id="organization-headquarter" autocomplete="headquarter" aria-required="true" placeholder="CA, Las Vegas" asp-for="@Model.Headquarter" />
                         <span asp-validation-for="@Model.Headquarter" class="text-danger"></span>
                     </div>
+                </div>
 
-                    <div class="col-lg-12 col-12">                        
-                        <textarea name="organization-description" rows="3" class="form-control" id="volunteer-message" placeholder="Description" asp-for="@Model.Description"></textarea>
-                        <span asp-validation-for="@Model.Description" class="text-danger"></span>
-                    </div>
+                <div class="col-lg-12 col-12">                        
+                    <textarea  asp-for="Description" class="form-control" rows="5" cols="40" placeholder="Write your description here."></textarea>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
                 </div>
 
                 <button type="submit" class="form-control">Submit</button> 

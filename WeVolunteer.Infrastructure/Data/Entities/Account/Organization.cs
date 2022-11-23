@@ -54,6 +54,6 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         /// Contains the Id of the user of the organization
         /// </summary>
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
+        public string UserId { get; set; }  
     }
 }

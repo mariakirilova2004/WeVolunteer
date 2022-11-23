@@ -61,7 +61,7 @@ namespace WeVolunteer.Core.Services
         /// <returns>Queryable expression tree</returns>
         public IQueryable<T> All<T>() where T : class
         {
-            return DbSet<T>().AsQueryable();
+            return this.DbSet<T>().AsQueryable();
         }
 
         public IQueryable<T> All<T>(Expression<Func<T, bool>> search) where T : class

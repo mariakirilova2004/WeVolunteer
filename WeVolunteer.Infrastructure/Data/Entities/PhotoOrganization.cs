@@ -24,14 +24,14 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Contains the identification of the user using the current photo
+        /// Contains the identification of the organization using the current photo
         /// </summary>
         [Required]
-        public string UserId { get; set; }
+        public int OrganizationId { get; set; }
         /// <summary>
-        /// Contains the reference of the user using the current photo
+        /// Contains the reference of the organization using the current photo
         /// </summary>
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        [ForeignKey(nameof(OrganizationId))]
+        public Organization Organization { get; set; }
     }
 }

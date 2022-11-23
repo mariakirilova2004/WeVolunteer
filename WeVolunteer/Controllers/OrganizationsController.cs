@@ -30,7 +30,7 @@ namespace WeVolunteer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Become(BecomeOrganizationFormModel model)
+        public async Task<IActionResult> Become(BecomeOrganizationFormModel model)
         {
             var userId = this.User.Id();
 
@@ -53,7 +53,7 @@ namespace WeVolunteer.Controllers
                 return View(model);
             }
 
-            this.organizationService.Create(userId,
+            await this.organizationService.CreateAsync(userId,
                                             model.Name,
                                             model.Headquarter,
                                             model.Description);
@@ -61,6 +61,23 @@ namespace WeVolunteer.Controllers
             TempData[MessageConstant.SuccessMessage] = "You have become an organization.";
 
             return RedirectToAction(nameof(CausesController.All), "Causes");
+        }
+
+        public IActionResult All([FromQuery] AllOrganizationsQueryModel query)
+        {
+            var queryResult = this.organizationService.All(
+                query.Category,
+                query.SearchTerm,
+                query.CurrentPage,
+                AllOrganizationsQueryModel.OrganizationsPerPage);
+
+            query.TotalOrganizationsCount = queryResult.TotalOrganizationsCount;
+            query.Organizations = queryResult.Organizations;
+
+            var organizationCategories = this.organizationService.AllCategoriesNames();
+            query.Categories = organizationCategories;
+
+            return View(query);
         }
     }
 }

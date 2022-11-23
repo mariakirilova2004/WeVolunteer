@@ -1,18 +1,33 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using WeVolunteer.Core.Services.Organization
+@using WeVolunteer.Extensions
 @using WeVolunteer.Infrastructure.Data.Entities.Account
 @using WeVolunteer.Infrastructure.Data.Entities
 @inject SignInManager<User> SignInManager;
 @inject UserManager<User> UserManager;
+@inject IOrganizationService organizationService;
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a  class="nav-link" asp-area="" asp-controller="Organizations" asp-action="Become">Become Organization</a>
-        </li>
-        <li class="nav-item">
-            <a  class="nav-link text-nowrap" asp-area="" asp-page="" title="">Hello, @User.Identity?.Name!</a>
-        </li>
+        @if (organizationService.ExistsById(User.Id()))
+        {
+            <li class="nav-item">
+                <a  class="nav-link" asp-area="" asp-controller="Organizations" asp-action="Mine">My Causes</a>
+            </li>
+            <li class="nav-item">
+                <a  class="nav-link text-nowrap" asp-area="" asp-page="" title="">Hello, @organizationService.GetOrganizationName(User.Id())</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a  class="nav-link" asp-area="" asp-controller="Organizations" asp-action="Become">Become Organization</a>
+            </li>
+            <li class="nav-item">
+                <a  class="nav-link text-nowrap" asp-area="" asp-page="" title="">Hello, @User.Identity?.Name!</a>
+            </li>
+        }
         <li class="nav-item">
             <form class="form-inline" asp-controller="User" asp-action="Logout" asp-route-id="@UserManager.GetUserId(User)">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>

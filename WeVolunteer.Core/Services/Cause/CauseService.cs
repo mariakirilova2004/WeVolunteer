@@ -34,15 +34,15 @@ namespace WeVolunteer.Core.Services.Cause
             if (!string.IsNullOrWhiteSpace(category))
             {
                 causesQuery = repository
-                    .All<Infrastructure.Data.Entities.Cause>(h => h.Category.Name == category);
+                    .All<Infrastructure.Data.Entities.Cause>(c => c.Category.Name == category);
             }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                causesQuery = causesQuery.Where(h =>
-                    h.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                    h.Place.ToLower().Contains(searchTerm.ToLower()) ||
-                    h.Description.ToLower().Contains(searchTerm.ToLower()));
+                causesQuery = causesQuery.Where(c =>
+                    c.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                    c.Place.ToLower().Contains(searchTerm.ToLower()) ||
+                    c.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
             causesQuery = sorting switch

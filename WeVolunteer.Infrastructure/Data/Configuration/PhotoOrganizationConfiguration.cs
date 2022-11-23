@@ -24,10 +24,19 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             {
                 Id = 1,
                 ImageUrl = "~/images/Organization.jpg",
-                UserId = "deal12856-c198-4129-b3f3-b893d8395082"
+                OrganizationId = 1
             };
 
             photosOrgazanizations.Add(photoOrgaznization1);
+
+            var photoOrgaznization2 = new PhotoOrganization()
+            {
+                Id = 2,
+                ImageUrl = "~/images/Organization2.jpg",
+                OrganizationId = 2
+            };
+
+            photosOrgazanizations.Add(photoOrgaznization2);
 
             return photosOrgazanizations;
         }
