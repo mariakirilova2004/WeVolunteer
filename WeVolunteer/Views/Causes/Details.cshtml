@@ -1,0 +1,103 @@
+﻿@model CauseDetailsViewModel;
+
+@{
+    string CauseName = Model.Name;
+    ViewData["Title"] = $"{CauseName}";
+}
+
+<section class="news-detail-header-section text-center">
+    <div class="section-overlay"></div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <h1 class="text-white">@ViewData["Title"]</h1>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="news-section section-padding">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-7 col-12">
+                <div class="news-block">
+                    <div class="news-block-top">
+                        <img src="@Url.Content(Model.Photos.FirstOrDefault())" class="news-image img-fluid" alt="">
+
+                        <div class="news-category-block">
+                            <a href="#" class="category-block-link">
+                                @Model.CategoryName
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="news-block-info">
+                        <div class="d-flex mt-2">
+                        <div class="news-block-date">
+                            <p>
+                                <i class="bi-calendar4 custom-icon me-1"></i>
+                                @Model.Time
+                            </p>
+                        </div>
+
+                        <div class="news-block-date">
+                            <p>
+                                <i class="bi-calendar4 custom-icon me-1"></i>
+                                @Model.Place
+                            </p>
+                        </div>
+
+                        <div class="news-block-author mx-5">
+                            <p>
+                                <i class="bi-person custom-icon me-1"></i>
+                                By Admin @Model.OrganizationName
+                            </p>
+                        </div>
+
+                        @*<div class="news-block-comment">
+                            <p>
+                                <i class="bi-chat-left custom-icon me-1"></i>
+                                @Model.
+                            </p>
+                        </div>*@
+                    </div>
+
+                    <div class="news-block-title mb-2">
+                        <h4>@Model.Name</h4>
+                    </div>
+
+                        <div class="row mt-5 mb-4">
+                            @*<div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                                <img src="images/news/africa-humanitarian-aid-doctor.jpg" class="news-detail-image img-fluid" alt="">
+                            </div>*@
+                            @for (var i = 1; i < 4; i++)
+                            {
+                                if (i > @Model.Photos.Count - 1) break;
+
+                                <div class="col-lg-4 col-12">
+                                    <img src="@Url.Content(@Model.Photos[i])" class="news-detail-image img-fluid" alt="">
+                                </div>
+                            }  
+                        </div>
+                    </div>
+
+                    <partial name="_TakePartInCausePartial"/>
+                    
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mx-auto mt-4 mt-lg-0">
+
+                <div class="news-block-body">
+                    <p>@Model.Description</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

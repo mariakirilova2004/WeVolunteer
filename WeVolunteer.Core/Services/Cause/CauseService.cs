@@ -86,9 +86,32 @@ namespace WeVolunteer.Core.Services.Cause
                         .ToList();
         }
 
+        public CauseDetailsViewModel CauseDeatilsById(int id)
+        {
+            return this.repository
+                    .All<Infrastructure.Data.Entities.Cause>(c => c.Id == id)
+                    .Select(c => new CauseDetailsViewModel()
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        Place = c.Place,
+                        Description = c.Description,
+                        Time = c.Time,
+                        OrganizationName = c.Organization.Name,
+                        Photos = c.Photos.Select(p =>  p.ImageUrl).ToList(),
+                        CategoryName = c.Category.Name
+                    })
+                    .FirstOrDefault();
+        }
+
+        public bool Exists(int id)
+        {
+            return repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id) != null;
+        }
+
         public List<PhotoCause> GetPhotosByCauseId(int id)
         {
-            return repository.All<PhotoCause>(pe => pe.CauseId == id).ToList();
+            return repository.All<PhotoCause>(pc => pc.CauseId == id).ToList();
         }
     }
 }

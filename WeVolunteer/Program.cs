@@ -80,9 +80,17 @@ app.UseAuthorization();
 //    app.MapRazorPages();
 //});
 
-app.MapControllerRoute(
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "Cause Details",
+        pattern: "/Causes/Details/{id}/{information}",
+        defaults: new { Controller = "Causes", Action = "Details" });
+
+    app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+    app.MapRazorPages();
+});
 
 app.Run();

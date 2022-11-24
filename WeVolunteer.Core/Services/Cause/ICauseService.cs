@@ -19,5 +19,8 @@ namespace WeVolunteer.Core.Services.Cause
                                           int causesPerPage = 1);
 
         IEnumerable<string> AllCategoriesNames();
+
+        bool Exists(int id);
+        CauseDetailsViewModel CauseDeatilsById(int id);
     }
 }

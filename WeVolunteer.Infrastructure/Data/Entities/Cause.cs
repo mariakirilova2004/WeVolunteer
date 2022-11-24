@@ -64,6 +64,11 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         public List<PhotoCause> Photos { get; set; } = new List<PhotoCause>();
 
         /// <summary>
+        /// Conatins several or one photo representing the cause
+        /// </summary>
+        public List<User> Users { get; set; } = new List<User>();
+
+        /// <summary>
         /// Contains the category of the cause
         /// </summary>
         [Required]

@@ -2,7 +2,7 @@
 
 namespace WeVolunteer.Core.Models.Cause
 {
-    public class CauseViewModel
+    public class CauseViewModel :ICauseModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

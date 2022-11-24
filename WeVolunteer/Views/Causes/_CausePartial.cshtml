@@ -27,7 +27,7 @@
                 </div>
             </div>
     
-            <a href="donate.html" class="custom-btn btn">Help now</a>
+            <a asp-controller="Causes" asp-action="Details" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" class="custom-btn btn">Details</a>
         </div>
     </div>
 </div>

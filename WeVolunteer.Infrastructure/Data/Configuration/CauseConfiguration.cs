@@ -30,6 +30,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
+                Users = new List<Entities.Account.User>(),
                 CategoryId = 3
             };
 
@@ -44,6 +45,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
+                Users = new List<Entities.Account.User>(),
                 CategoryId = 4
             };
 
@@ -58,6 +60,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
+                Users = new List<Entities.Account.User>(),
                 CategoryId = 1
             };
 
@@ -72,6 +75,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
+                Users = new List<Entities.Account.User>(),
                 CategoryId = 2
             };
 

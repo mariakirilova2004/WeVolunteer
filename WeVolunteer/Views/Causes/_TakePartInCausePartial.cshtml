@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WeVolunteer.Infrastructure.Data.Entities.Account
+@inject SignInManager<User> SignInManager;
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form class="custom-form subscribe-form" asp-controller="Causes" asp-action="TakePart" asp-route-id="@Model.Id" method="post">
+        <h5 class="mb-4">Become part of this cause</h5>
+        
+        <button type="submit" class="form-control">Take Part</button>
+    </form>
+}
+else
+{
+    <form class="custom-form subscribe-form" asp-controller="User" asp-action="Login" method="get">
+        <h5 class="mb-4">Become part of this cause</h5>
+        
+        <button type="submit" class="form-control">Take Part</button>
+    </form>
+}
