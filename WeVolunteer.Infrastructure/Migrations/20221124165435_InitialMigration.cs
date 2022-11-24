@@ -52,19 +52,17 @@ namespace WeVolunteer.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Organizations",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Headquarter = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,7 +172,29 @@ namespace WeVolunteer.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Organizations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Headquarter = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Organizations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Causes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -183,13 +203,20 @@ namespace WeVolunteer.Infrastructure.Migrations
                     Place = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrganizationId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_Causes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_Organizations_OrganizationId",
+                        name: "FK_Causes_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Causes_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
                         principalColumn: "Id",
@@ -203,80 +230,54 @@ namespace WeVolunteer.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    OrganizationId = table.Column<int>(type: "int", nullable: true)
+                    OrganizationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PhotosOrganizations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PhotosOrganizations_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_PhotosOrganizations_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhotosEvents",
+                name: "PhotosCauses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
+                    CauseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PhotosEvents", x => x.Id);
+                    table.PrimaryKey("PK_PhotosCauses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PhotosEvents_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
+                        name: "FK_PhotosCauses_Causes_CauseId",
+                        column: x => x.CauseId,
+                        principalTable: "Causes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "deal12856-c198-4129-b3f3-b893d8395082", 0, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "7933d930-4f18-4674-a5f4-018050283fc0", "user@mail.com", false, "User", "Userov", false, null, "USER@MAIL.COM", null, "AQAAAAEAACcQAAAAEByAkIAk5+InmQNo6CqkK426Wc2sf5uMO/4C/0s9+/Zwez6PK+jjXPKuCUGb7D9KLA==", "0888888888", false, "d72ea964-7509-4d5f-9091-33124883af2c", false, null });
+                values: new object[] { "deal12856-c198-4129-b3f3-b893d8395082", 0, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "f3410cbf-1957-4abc-a838-96204b3a6c7c", "user@mail.com", false, "User", "Userov", false, null, "USER@MAIL.COM", null, "AQAAAAEAACcQAAAAEJz904vWMqUsOilt32Enng15OCfsh+GZL2cwt3m4Jj2s/CgtMe2Q1HC6SvRlnHCMfA==", "0888888888", false, "a1d30260-c680-4bfe-b409-4ffdc939d5ca", false, null });
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "Description", "EventId", "Name" },
+                columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Permaculture Projects, Farming, Ecovillages and Environmental Conservation", null, "Environmental Work" },
-                    { 2, "Animal Farms, Wildlife Conservation, Animal Rescue and Animal Care", null, "Animals" },
-                    { 3, "Children and Youth NGOs, Education & Teaching, Community Development, Women’s Empowerment", null, "Social Impact" },
-                    { 4, "Health Care, Holistic Centers", null, "Health Care" },
-                    { 5, "Hostel/Guest House Administration, Digital Marketing, SEO and Web Development", null, "Tourism" }
+                    { 1, "Permaculture Projects, Farming, Ecovillages and Environmental Conservation", "Environmental Work" },
+                    { 2, "Animal Farms, Wildlife Conservation, Animal Rescue and Animal Care", "Animals" },
+                    { 3, "Children and Youth NGOs, Education & Teaching, Community Development, Women’s Empowerment", "Social Impact" },
+                    { 4, "Health Care, Holistic Centers", "Health Care" },
+                    { 5, "Hostel/Guest House Administration, Digital Marketing, SEO and Web Development", "Tourism" }
                 });
 
             migrationBuilder.InsertData(
@@ -285,31 +286,31 @@ namespace WeVolunteer.Infrastructure.Migrations
                 values: new object[] { 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", "Sofia, Bulgaria", "Admin organization", "deal12856-c198-4129-b3f3-b893d8395082" });
 
             migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "Description", "Name", "OrganizationId", "Place", "Time" },
+                table: "Causes",
+                columns: new[] { "Id", "CategoryId", "Description", "Name", "OrganizationId", "Place", "Time" },
                 values: new object[,]
                 {
-                    { 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Get in the network", 1, "Sofia, Bulgaria", new DateTime(2001, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Gift giving", 1, "Sofia, Bulgaria", new DateTime(2001, 2, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Elderly homes improvement", 1, "Sofia, Bulgaria", new DateTime(2001, 3, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Humans Best friends", 1, "Sofia, Bulgaria", new DateTime(2001, 4, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, 3, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Get in the network", 1, "Sofia, Bulgaria", new DateTime(2001, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 4, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Gift giving", 1, "Sofia, Bulgaria", new DateTime(2001, 2, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Elderly homes improvement", 1, "Sofia, Bulgaria", new DateTime(2001, 3, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 2, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Humans Best friends", 1, "Sofia, Bulgaria", new DateTime(2001, 4, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "PhotosOrganizations",
-                columns: new[] { "Id", "ImageUrl", "OrganizationId", "UserId" },
-                values: new object[] { 1, "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\Home+page+icons+(2).jpg", null, "deal12856-c198-4129-b3f3-b893d8395082" });
+                columns: new[] { "Id", "ImageUrl", "OrganizationId" },
+                values: new object[] { 1, "~/images/Organization.jpg", 1 });
 
             migrationBuilder.InsertData(
-                table: "PhotosEvents",
-                columns: new[] { "Id", "EventId", "ImageUrl" },
+                table: "PhotosCauses",
+                columns: new[] { "Id", "CauseId", "ImageUrl" },
                 values: new object[,]
                 {
-                    { 1, 1, "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\marathon-cheering-e1490361550179-1024x573.jpg" },
-                    { 2, 3, "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\download.jpg" },
-                    { 3, 2, "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\download (2).jpg" },
-                    { 4, 3, "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\download (1).jpg" },
-                    { 5, 4, "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\volunteer-opportunities-ideas-article-1200x800.jpg" }
+                    { 1, 1, "~/images/1.jpg" },
+                    { 2, 3, "~/images/2.jpg" },
+                    { 3, 2, "~/images/3.jpg" },
+                    { 4, 3, "~/images/4.jpg" },
+                    { 5, 4, "~/images/5.jpg" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -352,29 +353,29 @@ namespace WeVolunteer.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_EventId",
-                table: "Categories",
-                column: "EventId");
+                name: "IX_Causes_CategoryId",
+                table: "Causes",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_OrganizationId",
-                table: "Events",
+                name: "IX_Causes_OrganizationId",
+                table: "Causes",
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PhotosEvents_EventId",
-                table: "PhotosEvents",
-                column: "EventId");
+                name: "IX_Organizations_UserId",
+                table: "Organizations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhotosCauses_CauseId",
+                table: "PhotosCauses",
+                column: "CauseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhotosOrganizations_OrganizationId",
                 table: "PhotosOrganizations",
                 column: "OrganizationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PhotosOrganizations_UserId",
-                table: "PhotosOrganizations",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -395,10 +396,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "PhotosEvents");
+                name: "PhotosCauses");
 
             migrationBuilder.DropTable(
                 name: "PhotosOrganizations");
@@ -407,13 +405,16 @@ namespace WeVolunteer.Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Causes");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Organizations");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

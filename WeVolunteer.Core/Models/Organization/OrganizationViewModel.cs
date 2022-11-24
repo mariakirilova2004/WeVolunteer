@@ -10,6 +10,7 @@ namespace WeVolunteer.Core.Models.Organization
         public string Description { get; set; }
         public string Photo { get; set; }
         public string UserName { get; set; }
+        public string LastName { get; set; }
         public string CategoryName { get; set; }
 
     }

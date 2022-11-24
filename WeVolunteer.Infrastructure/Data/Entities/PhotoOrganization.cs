@@ -32,6 +32,6 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         /// Contains the reference of the organization using the current photo
         /// </summary>
         [ForeignKey(nameof(OrganizationId))]
-        public Organization Organization { get; set; }
+        public Organization? Organization { get; set; }
     }
 }

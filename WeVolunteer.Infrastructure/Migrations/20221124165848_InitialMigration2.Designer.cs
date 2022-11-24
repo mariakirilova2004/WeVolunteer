@@ -12,14 +12,14 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    [Migration("20221115202148_ChangingData")]
-    partial class ChangingData
+    [Migration("20221124165848_InitialMigration2")]
+    partial class InitialMigration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -186,9 +186,11 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Organizations");
 
@@ -288,17 +290,17 @@ namespace WeVolunteer.Infrastructure.Migrations
                             Id = "deal12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "92a59497-1f98-47ad-a4e1-ede8f020cd63",
+                            ConcurrencyStamp = "95a629b9-b0a5-465f-ace3-0a0db8b6fe63",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
                             LastName = "Userov",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGpbldn6M3+E1igN17LYKSW3BKcQleXcjZzurGcfhWsCrnCYnvdWwq48HXyfEwaJLg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPqy1DRUtrNYeIPkxIok1r1ZkzNohn+zL5UH/2zj/fbFwBuy8ZYz0K146epo2rnBzQ==",
                             PhoneNumber = "0888888888",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8f9ee216-12ad-4e5d-8234-4ddd9aaa6b2c",
+                            SecurityStamp = "aa744c52-f407-4082-8a74-9108937247af",
                             TwoFactorEnabled = false
                         });
                 });
@@ -311,9 +313,6 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CauseId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(400)
@@ -325,8 +324,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CauseId");
 
                     b.ToTable("Categories");
 
@@ -371,6 +368,9 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(400)
@@ -394,6 +394,8 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Causes");
@@ -402,6 +404,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            CategoryId = 3,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Get in the network",
                             OrganizationId = 1,
@@ -411,6 +414,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
+                            CategoryId = 4,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Gift giving",
                             OrganizationId = 1,
@@ -420,6 +424,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Elderly homes improvement",
                             OrganizationId = 1,
@@ -429,6 +434,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
+                            CategoryId = 2,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Humans Best friends",
                             OrganizationId = 1,
@@ -463,31 +469,31 @@ namespace WeVolunteer.Infrastructure.Migrations
                         {
                             Id = 1,
                             CauseId = 1,
-                            ImageUrl = "~/images/marathon-cheering-e1490361550179-1024x573.jpg"
+                            ImageUrl = "~/images/1.jpg"
                         },
                         new
                         {
                             Id = 2,
                             CauseId = 3,
-                            ImageUrl = "~/images/download.jpg"
+                            ImageUrl = "~/images/2.jpg"
                         },
                         new
                         {
                             Id = 3,
                             CauseId = 2,
-                            ImageUrl = "~/images/download (2).jpg"
+                            ImageUrl = "~/images/3.jpg"
                         },
                         new
                         {
                             Id = 4,
                             CauseId = 3,
-                            ImageUrl = "~/images/download (1).jpg"
+                            ImageUrl = "~/images/4.jpg"
                         },
                         new
                         {
                             Id = 5,
                             CauseId = 4,
-                            ImageUrl = "~/images/volunteer-opportunities-ideas-article-1200x800.jpg"
+                            ImageUrl = "~/images/5.jpg"
                         });
                 });
 
@@ -503,18 +509,12 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrganizationId")
+                    b.Property<int>("OrganizationId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PhotosOrganizations");
 
@@ -522,8 +522,14 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ImageUrl = "~/images/Home+page+icons+(2).jpg",
-                            UserId = "deal12856-c198-4129-b3f3-b893d8395082"
+                            ImageUrl = "~/images/Organization.jpg",
+                            OrganizationId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ImageUrl = "~/images/Organization2.jpg",
+                            OrganizationId = 2
                         });
                 });
 
@@ -578,41 +584,8 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Category", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", b =>
                 {
-                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("CauseId");
-                });
-
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
-                {
-                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
-                        .WithMany("Causes")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Organization");
-                });
-
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoCause", b =>
-                {
-                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", "Cause")
-                        .WithMany("Photos")
-                        .HasForeignKey("CauseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cause");
-                });
-
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoOrganization", b =>
-                {
-                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("OrganizationId");
-
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -622,6 +595,47 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Category", "Category")
+                        .WithMany("Causes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
+                        .WithMany("Causes")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoCause", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", "Cause")
+                        .WithMany("Photos")
+                        .HasForeignKey("CauseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cause");
+                });
+
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoOrganization", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
+                        .WithMany("Photos")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", b =>
                 {
                     b.Navigation("Causes");
@@ -629,10 +643,13 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Navigation("Photos");
                 });
 
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Category", b =>
+                {
+                    b.Navigation("Causes");
+                });
+
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
                 {
-                    b.Navigation("Categories");
-
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618

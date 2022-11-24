@@ -12,14 +12,14 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    [Migration("20221114144800_RenameEventWithCause")]
-    partial class RenameEventWithCause
+    [Migration("20221124165435_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -161,7 +161,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Account.Organization", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,9 +186,11 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Organizations");
 
@@ -203,7 +205,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Account.User", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -288,31 +290,28 @@ namespace WeVolunteer.Infrastructure.Migrations
                             Id = "deal12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "9a0b6241-900b-4a29-b45b-0fe825872697",
+                            ConcurrencyStamp = "f3410cbf-1957-4abc-a838-96204b3a6c7c",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
                             LastName = "Userov",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELMCGqDnIn+1QqwwUS/HD2a7CciX7hzMSuzOsSTWAA0AwMgKSt1jvdtLZcoM915FWg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJz904vWMqUsOilt32Enng15OCfsh+GZL2cwt3m4Jj2s/CgtMe2Q1HC6SvRlnHCMfA==",
                             PhoneNumber = "0888888888",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8f081b39-2057-4a6a-aee3-e24531f13cc5",
+                            SecurityStamp = "a1d30260-c680-4bfe-b409-4ffdc939d5ca",
                             TwoFactorEnabled = false
                         });
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Category", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("CauseId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -325,8 +324,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CauseId");
 
                     b.ToTable("Categories");
 
@@ -363,13 +360,16 @@ namespace WeVolunteer.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Cause", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -394,6 +394,8 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Causes");
@@ -402,6 +404,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            CategoryId = 3,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Get in the network",
                             OrganizationId = 1,
@@ -411,6 +414,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
+                            CategoryId = 4,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Gift giving",
                             OrganizationId = 1,
@@ -420,6 +424,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Elderly homes improvement",
                             OrganizationId = 1,
@@ -429,6 +434,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
+                            CategoryId = 2,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             Name = "Humans Best friends",
                             OrganizationId = 1,
@@ -463,31 +469,31 @@ namespace WeVolunteer.Infrastructure.Migrations
                         {
                             Id = 1,
                             CauseId = 1,
-                            ImageUrl = "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\marathon-cheering-e1490361550179-1024x573.jpg"
+                            ImageUrl = "~/images/1.jpg"
                         },
                         new
                         {
                             Id = 2,
                             CauseId = 3,
-                            ImageUrl = "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\download.jpg"
+                            ImageUrl = "~/images/2.jpg"
                         },
                         new
                         {
                             Id = 3,
                             CauseId = 2,
-                            ImageUrl = "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\download (2).jpg"
+                            ImageUrl = "~/images/3.jpg"
                         },
                         new
                         {
                             Id = 4,
                             CauseId = 3,
-                            ImageUrl = "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\download (1).jpg"
+                            ImageUrl = "~/images/4.jpg"
                         },
                         new
                         {
                             Id = 5,
                             CauseId = 4,
-                            ImageUrl = "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\volunteer-opportunities-ideas-article-1200x800.jpg"
+                            ImageUrl = "~/images/5.jpg"
                         });
                 });
 
@@ -503,18 +509,12 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrganizationId")
+                    b.Property<int>("OrganizationId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PhotosOrganizations");
 
@@ -522,8 +522,8 @@ namespace WeVolunteer.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ImageUrl = "C:\\Maria\\SoftUni Programming\\Advanced\\C# WEB\\WeVolunteer\\WeVolunteer.Core\\Resources\\Images\\Home+page+icons+(2).jpg",
-                            UserId = "deal12856-c198-4129-b3f3-b893d8395082"
+                            ImageUrl = "~/images/Organization.jpg",
+                            OrganizationId = 1
                         });
                 });
 
@@ -538,7 +538,7 @@ namespace WeVolunteer.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.User", null)
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -547,7 +547,7 @@ namespace WeVolunteer.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.User", null)
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -562,7 +562,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.User", null)
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -571,49 +571,16 @@ namespace WeVolunteer.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.User", null)
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Category", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", b =>
                 {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Cause", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("CauseId");
-                });
-
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Cause", b =>
-                {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.Organization", "Organization")
-                        .WithMany("Causes")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Organization");
-                });
-
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoCause", b =>
-                {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Cause", "Cause")
-                        .WithMany("Photos")
-                        .HasForeignKey("CauseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cause");
-                });
-
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoOrganization", b =>
-                {
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.Organization", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("OrganizationId");
-
-                    b.HasOne("WeVolunteer.Core.Data.Entities.Account.User", "User")
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -622,17 +589,61 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Account.Organization", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Category", "Category")
+                        .WithMany("Causes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
+                        .WithMany("Causes")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoCause", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", "Cause")
+                        .WithMany("Photos")
+                        .HasForeignKey("CauseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cause");
+                });
+
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoOrganization", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
+                        .WithMany("Photos")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", b =>
                 {
                     b.Navigation("Causes");
 
                     b.Navigation("Photos");
                 });
 
-            modelBuilder.Entity("WeVolunteer.Core.Data.Entities.Cause", b =>
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Category", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("Causes");
+                });
 
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
+                {
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618

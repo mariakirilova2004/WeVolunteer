@@ -288,17 +288,17 @@ namespace WeVolunteer.Infrastructure.Migrations
                             Id = "deal12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "97bbdf24-befc-496f-bfc6-de4c6c380802",
+                            ConcurrencyStamp = "95a629b9-b0a5-465f-ace3-0a0db8b6fe63",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
                             LastName = "Userov",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG1N1uT1FGcy3Dy/JhT58vZsCuTDPoswB1Cs0R5ZE5enR+NKUi4lAsWIXVimU8/pwg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPqy1DRUtrNYeIPkxIok1r1ZkzNohn+zL5UH/2zj/fbFwBuy8ZYz0K146epo2rnBzQ==",
                             PhoneNumber = "0888888888",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a8b952b6-12ed-4c13-9943-2f008671c3b5",
+                            SecurityStamp = "aa744c52-f407-4082-8a74-9108937247af",
                             TwoFactorEnabled = false
                         });
                 });
@@ -527,7 +527,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                         {
                             Id = 2,
                             ImageUrl = "~/images/Organization2.jpg",
-                            OrganizationId = 8
+                            OrganizationId = 2
                         });
                 });
 
@@ -598,7 +598,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Category", "Category")
                         .WithMany("Causes")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
@@ -617,7 +617,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", "Cause")
                         .WithMany("Photos")
                         .HasForeignKey("CauseId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cause");

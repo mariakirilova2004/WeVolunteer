@@ -28,10 +28,10 @@ namespace WeVolunteer.Core.Services.Organization
         {
             var organizationsQuery = repository.All<Infrastructure.Data.Entities.Account.Organization>();
 
-            if (!string.IsNullOrWhiteSpace(category))
+            if (!string.IsNullOrWhiteSpace(category) && category != "All")
             {
                 organizationsQuery = repository
-                    .All<Infrastructure.Data.Entities.Account.Organization>(o => GetOrganizationCategory(o.Id) == category);
+                    .All<Infrastructure.Data.Entities.Account.Organization>(o => o.Causes.Any(c => c.Category.Name == category));
             }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
@@ -53,7 +53,8 @@ namespace WeVolunteer.Core.Services.Organization
                     Headquarter = o.Headquarter,
                     Description = o.Description,
                     UserName = o.User.UserName,
-                    Photo = o.Photos.FirstOrDefault().ImageUrl
+                    Photo = o.Photos.FirstOrDefault().ImageUrl,
+                    LastName = o.User.LastName
                 })
                 .ToList();
 
@@ -84,7 +85,9 @@ namespace WeVolunteer.Core.Services.Organization
                 UserId = userId,
                 Name = name,
                 Headquarter = headquarter,
-                Description = description
+                Description = description,
+                Photos = new List<PhotoOrganization>(),
+                Causes = new List<Infrastructure.Data.Entities.Cause>()
             };
 
             await this.repository.AddAsync(organization);
