@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganss.Xss;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,10 @@ namespace WeVolunteer.Core.Services.Organization
 {
     public class OrganizationService : IOrganizationService
     {
-        private readonly WeVolunteerDbContext data;
         private readonly IRepository repository;
 
-        public OrganizationService(WeVolunteerDbContext data,
-                                   IRepository _repository)
+        public OrganizationService(IRepository _repository)
         {
-            this.data = data;
             this.repository = _repository;
         }
 
@@ -80,12 +78,14 @@ namespace WeVolunteer.Core.Services.Organization
                            string headquarter,
                            string description)
         {
+            var sanitalizer = new HtmlSanitizer();
+
             var organization = new Infrastructure.Data.Entities.Account.Organization()
             {
-                UserId = userId,
-                Name = name,
-                Headquarter = headquarter,
-                Description = description,
+                UserId = sanitalizer.Sanitize(userId),
+                Name = sanitalizer.Sanitize(name),
+                Headquarter = sanitalizer.Sanitize(headquarter),
+                Description = sanitalizer.Sanitize(description),
                 Photos = new List<PhotoOrganization>(),
                 Causes = new List<Infrastructure.Data.Entities.Cause>()
             };
@@ -96,7 +96,7 @@ namespace WeVolunteer.Core.Services.Organization
 
         public bool ExistsById(string userId)
         {
-            return this.data.Organizations.Where(o => o.UserId == userId).ToList().Count != 0;
+            return this.repository.All<Infrastructure.Data.Entities.Account.Organization>(o => o.UserId == userId).ToList().Count != 0;
         }
 
         public async Task<Infrastructure.Data.Entities.Account.Organization> GetOrganizationById(int organizationId)
@@ -106,7 +106,7 @@ namespace WeVolunteer.Core.Services.Organization
 
         public Infrastructure.Data.Entities.Account.Organization GetOrganizationByUserId(string userId)
         {
-            return this.data.Organizations.Where(o => o.UserId == userId).ToList().FirstOrDefault();
+            return this.repository.All<Infrastructure.Data.Entities.Account.Organization>(o => o.UserId == userId).ToList().FirstOrDefault();
         }
 
         public string GetOrganizationCategory(int organizationId)
@@ -132,15 +132,15 @@ namespace WeVolunteer.Core.Services.Organization
             return GetOrganizationByUserId(userId).Name;
         }
 
-        public bool UserHasCauses(int organizationId)
+        public async Task<bool> UserHasCauses(int organizationId)
         {
-            var organization = this.data.Organizations.FindAsync(organizationId).Result;
+            var organization = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.Organization>(organizationId);
             return organization.Causes.Count == 0;
         }
 
         public bool UserWithNameExists(string name)
         {
-            return this.data.Organizations.Any(o => o.Name == name);
+            return this.repository.All<Infrastructure.Data.Entities.Account.Organization>(o => o.Name == name).ToList().Count > 0;
         }
     }
 }

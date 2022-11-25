@@ -143,10 +143,16 @@ namespace WeVolunteer.Core.Services
             return await DbSet<T>().FindAsync(id);
         }
 
+        public async Task<T> GetByIdIncludeAsync<T>(object id, string entity) where T : class
+        {
+            return await DbSet<T>().FindAsync(id);
+        }
+
         public async Task<T> GetByIdsAsync<T>(object[] id) where T : class
         {
             return await DbSet<T>().FindAsync(id);
         }
+
 
         /// <summary>
         /// Saves all made changes in trasaction
@@ -185,5 +191,6 @@ namespace WeVolunteer.Core.Services
             var entities = All<T>(deleteWhereClause);
             DeleteRange(entities);
         }
+
     }
 }

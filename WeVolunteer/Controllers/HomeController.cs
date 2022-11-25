@@ -7,7 +7,6 @@ namespace WeVolunteer.Controllers
 {
     public class HomeController : Controller
     {
-        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();

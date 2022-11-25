@@ -20,7 +20,9 @@ namespace WeVolunteer.Core.Services.Cause
 
         IEnumerable<string> AllCategoriesNames();
 
-        bool Exists(int id);
+        Task<bool> Exists(int id);
         CauseDetailsViewModel CauseDeatilsById(int id);
+        Task BecomePartAsync(int id, string userId);
+        Task<bool> IsMadeBy(int id, string userId);
     }
 }

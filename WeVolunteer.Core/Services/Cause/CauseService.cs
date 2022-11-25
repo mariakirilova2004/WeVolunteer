@@ -7,6 +7,7 @@ using WeVolunteer.Core.Services.Cause;
 using WeVolunteer.Infrastructure.Data;
 using WeVolunteer.Infrastructure.Data.Entities;
 using WeVolunteer.Core.Models.Cause;
+using WeVolunteer.Core.Services.Organization;
 //using WeVolunteer.Core.Exceptions;
 
 namespace WeVolunteer.Core.Services.Cause
@@ -14,17 +15,16 @@ namespace WeVolunteer.Core.Services.Cause
     public class CauseService : ICauseService
     {
         private readonly IRepository repository;
+        private readonly IOrganizationService organizationService;
 
-        private readonly WeVolunteerDbContext context;
-
-        public CauseService(WeVolunteerDbContext _context, IRepository _repository)
+        public CauseService(IRepository _repository, IOrganizationService _organizationService)
         {
-            this.context = _context;
             this.repository = _repository;
+            this.organizationService = _organizationService;
         }
 
-        public AllCausesQueryModel All(string category = null,
-                                          string searchTerm = null,
+        public AllCausesQueryModel All(string category = "",
+                                          string searchTerm = "",
                                           CauseSorting sorting = CauseSorting.Newest,
                                           int currentPage = 1,
                                           int causesPerPage = 1)
@@ -86,6 +86,17 @@ namespace WeVolunteer.Core.Services.Cause
                         .ToList();
         }
 
+        public async Task BecomePartAsync(int id, string userId)
+        {
+            var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
+            var user = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.User>(userId);
+
+            cause.Users.Add(user);
+
+            this.repository.Update(cause);
+            await this.repository.SaveChangesAsync();
+        }
+
         public CauseDetailsViewModel CauseDeatilsById(int id)
         {
             return this.repository
@@ -104,14 +115,21 @@ namespace WeVolunteer.Core.Services.Cause
                     .FirstOrDefault();
         }
 
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id) != null;
+            return await  repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id) != null;
         }
 
         public List<PhotoCause> GetPhotosByCauseId(int id)
         {
             return repository.All<PhotoCause>(pc => pc.CauseId == id).ToList();
+        }
+
+        public async Task<bool> IsMadeBy(int id, string userId)
+        {
+            var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
+
+            return cause.OrganizationId == organizationService.GetOrganizationByUserId(userId).Id; ;
         }
     }
 }

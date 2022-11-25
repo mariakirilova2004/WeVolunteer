@@ -18,7 +18,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// Contains the URL of the photo
+        /// Contains the photo
         /// </summary>
         [Required]
         public string ImageUrl { get; set; }

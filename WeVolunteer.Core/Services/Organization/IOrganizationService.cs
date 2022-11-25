@@ -11,7 +11,7 @@ namespace WeVolunteer.Core.Services.Organization
     {
         bool ExistsById(string userId);
         bool UserWithNameExists(string email);
-        bool UserHasCauses(int organizationId);
+        Task<bool> UserHasCauses(int organizationId);
         Task CreateAsync(string userId,
                     string name,
                     string headquarter,

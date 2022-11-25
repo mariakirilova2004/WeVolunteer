@@ -29,6 +29,8 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 LastName = "Userov",
                 Email = "user@mail.com",
                 NormalizedEmail = "USER@MAIL.COM",
+                UserName = "USERQ",
+                NormalizedUserName = "USERQ",
                 PhoneNumber = "0888888888",
                 BirthDate = new DateTime(2000, 1, 1)
             };

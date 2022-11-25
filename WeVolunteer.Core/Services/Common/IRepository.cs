@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -44,6 +45,7 @@ namespace WeVolunteer.Core.Services
         Task<T> GetByIdAsync<T>(object id) where T : class;
 
         Task<T> GetByIdsAsync<T>(object[] id) where T : class;
+
 
         /// <summary>
         /// Adds entity to the database

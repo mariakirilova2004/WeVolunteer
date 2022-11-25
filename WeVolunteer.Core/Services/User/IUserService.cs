@@ -10,5 +10,6 @@ namespace WeVolunteer.Core.Services.User
     public interface IUserService
     {
         public bool EmailExists(string email);
+        bool IdExists(string userId);
     }
 }

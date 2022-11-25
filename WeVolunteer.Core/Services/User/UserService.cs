@@ -12,16 +12,19 @@ namespace WeVolunteer.Core.Services.User
     public class UserService : IUserService
     {
         private readonly IRepository repository;
-        private readonly WeVolunteerDbContext context;
-        public UserService(WeVolunteerDbContext _context, IRepository _repository)
+        public UserService(IRepository _repository)
         {
-            this.context = _context;
             this.repository = _repository;
         }
 
         public bool EmailExists(string email)
         {
-            return context.Users.Any(u => u.Email == email);
+            return this.repository.All<Infrastructure.Data.Entities.Account.User>(u => u.Email == email).ToList().Count > 0;
+        }
+
+        public bool IdExists(string userId)
+        {
+            return this.repository.All<Infrastructure.Data.Entities.Account.User>(u => u.Id == userId).ToList().Count > 0;
         }
     }
 }
