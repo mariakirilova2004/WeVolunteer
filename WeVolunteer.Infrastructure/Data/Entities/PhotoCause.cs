@@ -21,7 +21,13 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         /// Contains the photo
         /// </summary>
         [Required]
-        public string ImageUrl { get; set; }
+        public byte[] Image { get; set; }
+
+        /// <summary>
+        /// Contains the format of the photo
+        /// </summary>
+        [Required]
+        public string ImageFormat { get; set; }
 
         /// <summary>
         /// Contains the identification of the event using the current photo

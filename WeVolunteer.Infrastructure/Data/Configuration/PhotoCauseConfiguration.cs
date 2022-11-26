@@ -28,7 +28,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             {
 
                 Id = 1,
-                ImageUrl = "~/images/1.jpg",
+                //ImageUrl = "~/images/1.jpg",
                 CauseId = 1
             };
 
@@ -37,7 +37,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             var photoCause2 = new PhotoCause()
             {
                 Id = 2,
-                ImageUrl = "~/images/2.jpg",
+                //ImageUrl = "~/images/2.jpg",
                 CauseId = 3
             };
 
@@ -46,7 +46,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             var photoCause3 = new PhotoCause()
             {
                 Id = 3,
-                ImageUrl = "~/images/3.jpg",
+                //ImageUrl = "~/images/3.jpg",
                 CauseId = 2
             };
 
@@ -55,7 +55,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             var photoCause4 = new PhotoCause()
             {
                 Id = 4,
-                ImageUrl = "~/images/4.jpg",
+                //ImageUrl = "~/images/4.jpg",
                 CauseId = 3
             };
 
@@ -64,7 +64,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             var photoEvent5 = new PhotoCause()
             {
                 Id = 5,
-                ImageUrl = "~/images/5.jpg",
+                //ImageUrl = "~/images/5.jpg",
                 CauseId = 4
             };
 

@@ -13,7 +13,7 @@
         @if (organizationService.ExistsById(User.Id()))
         {
             <li class="nav-item">
-                <a  class="nav-link" asp-area="" asp-controller="Organization" asp-action="Mine">My Causes</a>
+                <a  class="nav-link" asp-area="" asp-controller="Cause" asp-action="Mine">My Causes</a>
             </li>
             <li class="nav-item">
                 <a  class="nav-link text-nowrap" asp-area="" asp-page="" title="">Hello, @organizationService.GetOrganizationName(User.Id())</a>

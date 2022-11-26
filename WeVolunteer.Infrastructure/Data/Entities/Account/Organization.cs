@@ -38,7 +38,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         /// <summary>
         /// Contains several or one photo representing the organization (logo, photo from event)
         /// </summary>
-        public List<PhotoOrganization> Photos { get; set; } = new List<PhotoOrganization>();
+        public List<PhotoOrganization> Photos { get; set; }
 
         /// <summary>
         /// Contains all the causes that are organized by this organization

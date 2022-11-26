@@ -26,7 +26,7 @@
             <div class="col-lg-7 col-12">
                 <div class="news-block">
                     <div class="news-block-top">
-                        <img src="@Url.Content(Model.Photos.FirstOrDefault())" class="news-image img-fluid" alt="">
+                        <img src="data:@Model.Photos[0].ImageFormat;base64,@Model.Photos[0].Image" class="news-image img-fluid" alt="">
 
                         <div class="news-category-block">
                             <a href="#" class="category-block-link">
@@ -79,7 +79,7 @@
                                 if (i > @Model.Photos.Count - 1) break;
 
                                 <div class="col-lg-4 col-12">
-                                    <img src="@Url.Content(@Model.Photos[i])" class="news-detail-image img-fluid" alt="">
+                                    <img src="data:@Model.Photos[i].ImageFormat;base64,@Model.Photos[i].Image" class="news-detail-image img-fluid" alt="">
                                 </div>
                             }  
                         </div>

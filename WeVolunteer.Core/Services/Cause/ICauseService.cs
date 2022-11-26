@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,18 @@ namespace WeVolunteer.Core.Services.Cause
 
         IEnumerable<string> AllCategoriesNames();
 
+        IEnumerable<string> MineCategoriesNames(string userId);
+
         Task<bool> Exists(int id);
+
         CauseDetailsViewModel CauseDeatilsById(int id);
+
         Task BecomePartAsync(int id, string userId);
+
         Task<bool> IsMadeBy(int id, string userId);
+
+        MineCausesQueryModel Mine(string category, string searchTerm, CauseSorting sorting, int currentPage, int causesPerPage, string userId);
+        bool CauseWithNameExists(string name, string userId);
+        Task CreateAsync(int organizationId, string name, string place, DateTime time, string description, IFormFile image, int categoryId);
     }
 }

@@ -26,6 +26,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedPhoneNumber"); ;
     options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:RequiredLength"); ;
     options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric"); ;
+    options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:RequireUppercase"); ;
 })
     .AddEntityFrameworkStores<WeVolunteerDbContext>();
 
@@ -84,8 +85,8 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "Cause Details",
-        pattern: "/Causes/Details/{id}/{information}",
-        defaults: new { Controller = "Causes", Action = "Details" });
+        pattern: "/Cause/Details/{id}/{information}",
+        defaults: new { Controller = "Cause", Action = "Details" });
 
     app.MapControllerRoute(
     name: "default",

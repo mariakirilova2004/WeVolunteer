@@ -3,7 +3,7 @@
 <div class="news-block">
     <div class="news-block-top">
         <a href="news-detail.html">
-            <img src="@Url.Content(Model.Photo)" class="news-image img-fluid" alt="">
+            <img src="data:@Model.Photo.ImageFormat;base64,@Model.Photo.Image" class="news-image img-fluid" alt="">
         </a>
     </div>
 

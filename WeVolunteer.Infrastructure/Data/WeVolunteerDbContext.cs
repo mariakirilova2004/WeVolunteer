@@ -23,12 +23,12 @@ namespace WeVolunteer.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new PhotoCauseConfiguration());
-            modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
-            modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new PhotoCauseConfiguration());
+            //modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
+            //modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new CauseConfiguration());
+            //modelBuilder.ApplyConfiguration(new CauseConfiguration());
 
             modelBuilder.Entity<Organization>()
                .HasKey(o => o.Id);

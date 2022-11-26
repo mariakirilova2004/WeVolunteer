@@ -61,7 +61,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         /// <summary>
         /// Conatins several or one photo representing the cause
         /// </summary>
-        public List<PhotoCause> Photos { get; set; } = new List<PhotoCause>();
+        public List<PhotoCause> Photos { get; set; } 
 
         /// <summary>
         /// Conatins several or one photo representing the cause

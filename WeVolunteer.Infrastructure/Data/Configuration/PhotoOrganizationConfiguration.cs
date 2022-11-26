@@ -23,7 +23,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             var photoOrgaznization1 = new PhotoOrganization()
             {
                 Id = 1,
-                ImageUrl = "~/images/Organization.jpg",
+                //ImageUrl = "~/images/Organization.jpg",
                 OrganizationId = 1
             };
 
@@ -32,7 +32,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
             var photoOrgaznization2 = new PhotoOrganization()
             {
                 Id = 2,
-                ImageUrl = "~/images/Organization2.jpg",
+                //ImageUrl = "~/images/Organization2.jpg",
                 OrganizationId = 2
             };
 

@@ -1,4 +1,5 @@
-﻿using WeVolunteer.Infrastructure.Data.Entities;
+﻿using WeVolunteer.Core.Models.Photos;
+using WeVolunteer.Infrastructure.Data.Entities;
 
 namespace WeVolunteer.Core.Models.Cause
 {
@@ -9,6 +10,6 @@ namespace WeVolunteer.Core.Models.Cause
         public string Place { get; set; }
         public DateTime Time { get; set; }
         public string Description { get; set; }
-        public PhotoCause Photo { get; set; }
+        public PhotoViewModel Photo { get; set; }
     }
 }

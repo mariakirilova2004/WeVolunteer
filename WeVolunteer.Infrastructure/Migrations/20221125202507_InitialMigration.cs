@@ -24,34 +24,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -99,12 +71,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,12 +85,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,12 +103,35 @@ namespace WeVolunteer.Infrastructure.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CauseId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -229,7 +212,8 @@ namespace WeVolunteer.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ImageFormat = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrganizationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -249,7 +233,8 @@ namespace WeVolunteer.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ImageFormat = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CauseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -261,56 +246,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                         principalTable: "Causes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "deal12856-c198-4129-b3f3-b893d8395082", 0, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "f3410cbf-1957-4abc-a838-96204b3a6c7c", "user@mail.com", false, "User", "Userov", false, null, "USER@MAIL.COM", null, "AQAAAAEAACcQAAAAEJz904vWMqUsOilt32Enng15OCfsh+GZL2cwt3m4Jj2s/CgtMe2Q1HC6SvRlnHCMfA==", "0888888888", false, "a1d30260-c680-4bfe-b409-4ffdc939d5ca", false, null });
-
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "Description", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Permaculture Projects, Farming, Ecovillages and Environmental Conservation", "Environmental Work" },
-                    { 2, "Animal Farms, Wildlife Conservation, Animal Rescue and Animal Care", "Animals" },
-                    { 3, "Children and Youth NGOs, Education & Teaching, Community Development, Women’s Empowerment", "Social Impact" },
-                    { 4, "Health Care, Holistic Centers", "Health Care" },
-                    { 5, "Hostel/Guest House Administration, Digital Marketing, SEO and Web Development", "Tourism" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Organizations",
-                columns: new[] { "Id", "Description", "Headquarter", "Name", "UserId" },
-                values: new object[] { 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", "Sofia, Bulgaria", "Admin organization", "deal12856-c198-4129-b3f3-b893d8395082" });
-
-            migrationBuilder.InsertData(
-                table: "Causes",
-                columns: new[] { "Id", "CategoryId", "Description", "Name", "OrganizationId", "Place", "Time" },
-                values: new object[,]
-                {
-                    { 1, 3, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Get in the network", 1, "Sofia, Bulgaria", new DateTime(2001, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 4, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Gift giving", 1, "Sofia, Bulgaria", new DateTime(2001, 2, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Elderly homes improvement", 1, "Sofia, Bulgaria", new DateTime(2001, 3, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, 2, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Humans Best friends", 1, "Sofia, Bulgaria", new DateTime(2001, 4, 1, 10, 0, 0, 0, DateTimeKind.Unspecified) }
-                });
-
-            migrationBuilder.InsertData(
-                table: "PhotosOrganizations",
-                columns: new[] { "Id", "ImageUrl", "OrganizationId" },
-                values: new object[] { 1, "~/images/Organization.jpg", 1 });
-
-            migrationBuilder.InsertData(
-                table: "PhotosCauses",
-                columns: new[] { "Id", "CauseId", "ImageUrl" },
-                values: new object[,]
-                {
-                    { 1, 1, "~/images/1.jpg" },
-                    { 2, 3, "~/images/2.jpg" },
-                    { 3, 2, "~/images/3.jpg" },
-                    { 4, 3, "~/images/4.jpg" },
-                    { 5, 4, "~/images/5.jpg" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -346,6 +281,11 @@ namespace WeVolunteer.Infrastructure.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_CauseId",
+                table: "AspNetUsers",
+                column: "CauseId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -376,10 +316,45 @@ namespace WeVolunteer.Infrastructure.Migrations
                 name: "IX_PhotosOrganizations_OrganizationId",
                 table: "PhotosOrganizations",
                 column: "OrganizationId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                table: "AspNetUserRoles",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Causes_CauseId",
+                table: "AspNetUsers",
+                column: "CauseId",
+                principalTable: "Causes",
+                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Organizations_AspNetUsers_UserId",
+                table: "Organizations");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -405,6 +380,9 @@ namespace WeVolunteer.Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Causes");
 
             migrationBuilder.DropTable(
@@ -412,9 +390,6 @@ namespace WeVolunteer.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Organizations");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

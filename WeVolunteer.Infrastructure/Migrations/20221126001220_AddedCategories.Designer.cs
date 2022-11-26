@@ -12,8 +12,8 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    [Migration("20221124165435_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20221126001220_AddedCategories")]
+    partial class AddedCategories
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,16 +193,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Organizations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-                            Headquarter = "Sofia, Bulgaria",
-                            Name = "Admin organization",
-                            UserId = "deal12856-c198-4129-b3f3-b893d8395082"
-                        });
                 });
 
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.User", b =>
@@ -215,6 +205,9 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CauseId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -274,6 +267,8 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CauseId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -283,26 +278,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "deal12856-c198-4129-b3f3-b893d8395082",
-                            AccessFailedCount = 0,
-                            BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "f3410cbf-1957-4abc-a838-96204b3a6c7c",
-                            Email = "user@mail.com",
-                            EmailConfirmed = false,
-                            FirstName = "User",
-                            LastName = "Userov",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJz904vWMqUsOilt32Enng15OCfsh+GZL2cwt3m4Jj2s/CgtMe2Q1HC6SvRlnHCMfA==",
-                            PhoneNumber = "0888888888",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "a1d30260-c680-4bfe-b409-4ffdc939d5ca",
-                            TwoFactorEnabled = false
-                        });
                 });
 
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Category", b =>
@@ -399,48 +374,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Causes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 3,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                            Name = "Get in the network",
-                            OrganizationId = 1,
-                            Place = "Sofia, Bulgaria",
-                            Time = new DateTime(2001, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 4,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                            Name = "Gift giving",
-                            OrganizationId = 1,
-                            Place = "Sofia, Bulgaria",
-                            Time = new DateTime(2001, 2, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 1,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                            Name = "Elderly homes improvement",
-                            OrganizationId = 1,
-                            Place = "Sofia, Bulgaria",
-                            Time = new DateTime(2001, 3, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 2,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                            Name = "Humans Best friends",
-                            OrganizationId = 1,
-                            Place = "Sofia, Bulgaria",
-                            Time = new DateTime(2001, 4, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoCause", b =>
@@ -454,7 +387,11 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Property<int>("CauseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ImageFormat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -463,38 +400,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasIndex("CauseId");
 
                     b.ToTable("PhotosCauses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CauseId = 1,
-                            ImageUrl = "~/images/1.jpg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CauseId = 3,
-                            ImageUrl = "~/images/2.jpg"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CauseId = 2,
-                            ImageUrl = "~/images/3.jpg"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CauseId = 3,
-                            ImageUrl = "~/images/4.jpg"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CauseId = 4,
-                            ImageUrl = "~/images/5.jpg"
-                        });
                 });
 
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.PhotoOrganization", b =>
@@ -505,7 +410,11 @@ namespace WeVolunteer.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ImageFormat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -517,14 +426,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("PhotosOrganizations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageUrl = "~/images/Organization.jpg",
-                            OrganizationId = 1
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -589,6 +490,13 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.User", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", null)
+                        .WithMany("Users")
+                        .HasForeignKey("CauseId");
+                });
+
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
                 {
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Category", "Category")
@@ -645,6 +553,8 @@ namespace WeVolunteer.Infrastructure.Migrations
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
                 {
                     b.Navigation("Photos");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

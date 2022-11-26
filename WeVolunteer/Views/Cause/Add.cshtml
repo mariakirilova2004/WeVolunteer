@@ -1,0 +1,66 @@
+﻿@model AddCauseFormModel
+
+@{
+    ViewData["Title"] = "Add Cause";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-12">
+
+            <form class="custom-form volunteer-form mb-5 mb-lg-0" enctype="multipart/form-data" method="post" role="form">
+                <h2 class="mb-4">@ViewData["Title"]</h2>
+                <h3 class="mb-4">Make the first step today</h3>
+
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <input type="text" class="form-control" id="organization-name" autocomplete="name" aria-required="true" placeholder="Let's help the animals" asp-for="@Model.Name" />
+                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6 col-12">                        
+                        <input type="text" class="form-control" id="organization-place" autocomplete="place" aria-required="true" placeholder="CA, Las Vegas" asp-for="@Model.Place" />
+                        <span asp-validation-for="@Model.Place" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-12">                        
+                        <input  asp-for="Time" value="01/01/2023" placeholder="01/01/2023" name="datetime" class="form-control"/>
+                        <span asp-validation-for="@Model.Time" class="text-danger"></span>
+                    </div>    
+                    <div class="col-lg-6 col-12">
+                        <select asp-for="CategoryId" class="form-control">
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Id" placeholder="Choose Category">@category.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                    </div> 
+                </div>
+
+                <div class="col-lg-12 col-12">                  
+                    <textarea  asp-for="Description" class="form-control" rows="5" cols="40" placeholder="Write your description here."></textarea>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+
+                <div class="col-lg-12 col-12">   
+                    <input asp-for="Image" class="form-control" accept="image/*" />
+                    <span asp-validation-for="@Model.Image" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="form-control">Submit</button> 
+            </form>
+        </div>
+
+        <div class="col-lg-6 col-12 data-image">
+            <img src="~/images/organization-table.png" class="volunteer-image" alt="">
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

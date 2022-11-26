@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,5 +22,8 @@ namespace WeVolunteer.Core.Models.Organization
         [Required]
         [StringLength(OrganizationMaxLengthDescription, ErrorMessage = "Must be between {2} and {1} characters long.", MinimumLength = OrganizationMinLengthDescription)]
         public string Description { get; set; }
+
+        [Required]
+        public IFormFile Image { get; set; }
     }
 }

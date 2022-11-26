@@ -1,10 +1,12 @@
 ﻿using Ganss.Xss;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeVolunteer.Core.Models.Organization;
+using WeVolunteer.Core.Models.Photos;
 using WeVolunteer.Infrastructure.Data;
 using WeVolunteer.Infrastructure.Data.Entities;
 
@@ -25,6 +27,7 @@ namespace WeVolunteer.Core.Services.Organization
                                           int organizationsPerPage = 1)
         {
             var organizationsQuery = repository.All<Infrastructure.Data.Entities.Account.Organization>();
+
 
             if (!string.IsNullOrWhiteSpace(category) && category != "All")
             {
@@ -51,7 +54,11 @@ namespace WeVolunteer.Core.Services.Organization
                     Headquarter = o.Headquarter,
                     Description = o.Description,
                     UserName = o.User.UserName,
-                    Photo = o.Photos.FirstOrDefault().ImageUrl,
+                    Photo = new PhotoViewModel
+                    {
+                        Image = Convert.ToBase64String(o.Photos.First().Image),
+                        ImageFormat = o.Photos.First().ImageFormat
+                    },
                     LastName = o.User.LastName
                 })
                 .ToList();
@@ -67,7 +74,7 @@ namespace WeVolunteer.Core.Services.Organization
 
         public IEnumerable<string> AllCategoriesNames()
         {
-            return repository.All<Category>()
+            return repository.All<Infrastructure.Data.Entities.Category>()
                         .Select(c => c.Name)
                         .Distinct()
                         .ToList();
@@ -76,7 +83,8 @@ namespace WeVolunteer.Core.Services.Organization
         public async Task CreateAsync(string userId, 
                            string name,
                            string headquarter,
-                           string description)
+                           string description,
+                           IFormFile image)
         {
             var sanitalizer = new HtmlSanitizer();
 
@@ -86,9 +94,21 @@ namespace WeVolunteer.Core.Services.Organization
                 Name = sanitalizer.Sanitize(name),
                 Headquarter = sanitalizer.Sanitize(headquarter),
                 Description = sanitalizer.Sanitize(description),
-                Photos = new List<PhotoOrganization>(),
                 Causes = new List<Infrastructure.Data.Entities.Cause>()
             };
+
+            var photo = new Infrastructure.Data.Entities.PhotoOrganization()
+            {
+                ImageFormat = image.ContentType,
+                OrganizationId = organization.Id,
+                Organization = organization
+            };
+
+            var memoryStream = new MemoryStream();
+            image.CopyTo(memoryStream);
+            photo.Image = memoryStream.ToArray();
+
+            organization.Photos = new List<PhotoOrganization>() { photo };
 
             await this.repository.AddAsync(organization);
             await this.repository.SaveChangesAsync();
@@ -142,5 +162,10 @@ namespace WeVolunteer.Core.Services.Organization
         {
             return this.repository.All<Infrastructure.Data.Entities.Account.Organization>(o => o.Name == name).ToList().Count > 0;
         }
+
+        public PhotoOrganization GetPhotoOrganizationByOrganizationId(int id)
+        {
+            return repository.All<Infrastructure.Data.Entities.PhotoOrganization>(po => po.OrganizationId == id).ToList().First();
+        } 
     }
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeVolunteer.Core.Models.Organization;
+using WeVolunteer.Infrastructure.Data.Entities;
 
 namespace WeVolunteer.Core.Services.Organization
 {
@@ -15,7 +17,8 @@ namespace WeVolunteer.Core.Services.Organization
         Task CreateAsync(string userId,
                     string name,
                     string headquarter,
-                    string description);
+                    string description,
+                    IFormFile image);
         Task<Infrastructure.Data.Entities.Account.Organization> GetOrganizationById(int organizationId);
 
         string GetOrganizationCategory(int organizationId);

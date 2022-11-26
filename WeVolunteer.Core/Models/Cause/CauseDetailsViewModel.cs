@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Core.Models.Photos;
 
 namespace WeVolunteer.Core.Models.Cause
 {
@@ -14,7 +15,7 @@ namespace WeVolunteer.Core.Models.Cause
         public DateTime Time { get; set; }
         public string OrganizationName { get; set; }
         public string Description { get; set; }
-        public List<string> Photos { get; set; } = new List<string>();
+        public List<PhotoViewModel> Photos { get; set; }
         public string CategoryName { get; set; }
     }
 }

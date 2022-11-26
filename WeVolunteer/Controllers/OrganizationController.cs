@@ -18,13 +18,14 @@ namespace WeVolunteer.Controllers
             this.organizationService = _organizationService;
         }
 
+        [HttpGet]
         public IActionResult Become()
         {
             if (this.organizationService.ExistsById(this.User.Id()))
             {
                 TempData[MessageConstant.WarningMessage] = "You are already an organization!";
 
-                return RedirectToAction(nameof(CauseController.All), "Causes");
+                return RedirectToAction(nameof(CauseController.All), "Cause");
             }
             return View();
         }
@@ -38,7 +39,7 @@ namespace WeVolunteer.Controllers
             {
                 TempData[MessageConstant.WarningMessage] = "You are already an organization!";
 
-                return RedirectToAction(nameof(CauseController.All), "Causes");
+                return RedirectToAction(nameof(CauseController.All), "Cause");
             }
 
             if (this.organizationService.UserWithNameExists(model.Name))
@@ -56,11 +57,12 @@ namespace WeVolunteer.Controllers
             await this.organizationService.CreateAsync(userId,
                                             model.Name,
                                             model.Headquarter,
-                                            model.Description);
+                                            model.Description,
+                                            model.Image);
 
             TempData[MessageConstant.SuccessMessage] = "You have become an organization.";
 
-            return RedirectToAction(nameof(CauseController.All), "Causes");
+            return RedirectToAction(nameof(CauseController.All), "Cause");
         }
 
         [AllowAnonymous]

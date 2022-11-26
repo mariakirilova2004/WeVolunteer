@@ -2,7 +2,7 @@
 
 <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
     <div class="custom-block-wrap">
-        <img src="@Url.Content(Model.Photo.ImageUrl)" class="custom-block-image img-fluid" alt="...">
+        <img src="data:@Model.Photo.ImageFormat;base64,@Model.Photo.Image" class="custom-block-image img-fluid" alt="...">
     
         <div class="custom-block">
             <div class="custom-block-body">

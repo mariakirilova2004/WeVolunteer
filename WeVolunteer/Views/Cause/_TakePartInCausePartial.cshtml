@@ -9,7 +9,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    @if (organizationService.GetOrganizationByUserId(User.Id()).Name == Model.OrganizationName)
+    @if (organizationService.GetOrganizationByUserId(User.Id()) != null && organizationService.GetOrganizationByUserId(User.Id()).Name == Model.OrganizationName)
     {
         <h5 class="mb-4">Manage your cause</h5>
         <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Edit" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" method="get">

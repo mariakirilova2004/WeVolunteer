@@ -8,6 +8,10 @@ using WeVolunteer.Infrastructure.Data;
 using WeVolunteer.Infrastructure.Data.Entities;
 using WeVolunteer.Core.Models.Cause;
 using WeVolunteer.Core.Services.Organization;
+using WeVolunteer.Core.Models.Photos;
+using Microsoft.AspNetCore.Http;
+using Ganss.Xss;
+
 //using WeVolunteer.Core.Exceptions;
 
 namespace WeVolunteer.Core.Services.Cause
@@ -65,7 +69,12 @@ namespace WeVolunteer.Core.Services.Cause
                     Place = c.Place,
                     Time = c.Time,
                     Description = c.Description,
-                    Photo = c.Photos.FirstOrDefault()
+                    Photo = 
+                    new PhotoViewModel 
+                    { 
+                        Image = Convert.ToBase64String(c.Photos[0].Image),
+                        ImageFormat = c.Photos[0].ImageFormat
+                    }
                 })
                 .ToList();
 
@@ -78,9 +87,78 @@ namespace WeVolunteer.Core.Services.Cause
             };
         }
 
+        public MineCausesQueryModel Mine(string category = "",
+                                          string searchTerm = "",
+                                          CauseSorting sorting = CauseSorting.Newest,
+                                          int currentPage = 1,
+                                          int causesPerPage = 1,
+                                          string userId = "")
+        {
+            var causesQuery = repository.All<Infrastructure.Data.Entities.Cause>(c => c.Organization.UserId == userId);
+
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                causesQuery = repository
+                    .All<Infrastructure.Data.Entities.Cause>(c => c.Category.Name == category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                causesQuery = causesQuery.Where(c =>
+                    c.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                    c.Place.ToLower().Contains(searchTerm.ToLower()) ||
+                    c.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            causesQuery = sorting switch
+            {
+                CauseSorting.Latest => causesQuery
+                    .OrderBy(c => c.Time),
+                CauseSorting.Active => causesQuery
+                    .Where(c => c.Time > DateTime.Now)
+                    .OrderBy(c => c.Time),
+                _ => causesQuery.OrderByDescending(c => c.Id)
+            };
+
+            var causes = causesQuery
+                .Skip((currentPage - 1) * causesPerPage)
+                .Take(causesPerPage)
+                .Select(c => new CauseViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Place = c.Place,
+                    Time = c.Time,
+                    Description = c.Description,
+                    Photo = 
+                   new PhotoViewModel
+                   {
+                       Image = Convert.ToBase64String(c.Photos[0].Image),
+                       ImageFormat = c.Photos[0].ImageFormat
+                   }
+                })
+                .ToList();
+
+            var totalCauses = causesQuery.Count();
+
+            return new MineCausesQueryModel()
+            {
+                TotalCausesCount = totalCauses,
+                Causes = causes
+            };
+        }
+
         public IEnumerable<string> AllCategoriesNames()
         {
-            return this.repository.All<Category>()
+            return this.repository.All<Infrastructure.Data.Entities.Category>()
+                        .Select(c => c.Name)
+                        .Distinct()
+                        .ToList();
+        }
+
+        public IEnumerable<string> MineCategoriesNames(string userId)
+        {
+            return this.repository.All<Infrastructure.Data.Entities.Category>(c => c.Causes.Any(cause => cause.Organization.UserId == userId))
                         .Select(c => c.Name)
                         .Distinct()
                         .ToList();
@@ -109,7 +187,11 @@ namespace WeVolunteer.Core.Services.Cause
                         Description = c.Description,
                         Time = c.Time,
                         OrganizationName = c.Organization.Name,
-                        Photos = c.Photos.Select(p =>  p.ImageUrl).ToList(),
+                        Photos = c.Photos.Select( p => new PhotoViewModel
+                        {
+                            Image = Convert.ToBase64String(p.Image),
+                            ImageFormat = p.ImageFormat
+                        }).ToList(),
                         CategoryName = c.Category.Name
                     })
                     .FirstOrDefault();
@@ -129,7 +211,49 @@ namespace WeVolunteer.Core.Services.Cause
         {
             var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
 
-            return cause.OrganizationId == organizationService.GetOrganizationByUserId(userId).Id; ;
+            return organizationService.GetOrganizationByUserId(userId) != null && cause.OrganizationId == organizationService.GetOrganizationByUserId(userId).Id; ;
+        }
+
+        public bool CauseWithNameExists(string name, string userId)
+        {
+            return this.repository.All<Infrastructure.Data.Entities.Cause>(c => c.Name == name && c.Organization.UserId == userId).ToList().Count > 0;
+        }
+
+        public async Task CreateAsync(int organizationId, 
+                                      string name, 
+                                      string place,
+                                      DateTime time, 
+                                      string description,
+                                      IFormFile image, 
+                                      int categoryId)
+        {
+            var sanitalizer = new HtmlSanitizer();
+
+            var cause = new Infrastructure.Data.Entities.Cause()
+            {
+                OrganizationId = organizationId,
+                Name = sanitalizer.Sanitize(name),
+                Place = sanitalizer.Sanitize(place),
+                Time = time,
+                Description = sanitalizer.Sanitize(description),
+                CategoryId = categoryId
+            };
+
+            var photo = new Infrastructure.Data.Entities.PhotoCause()
+            {
+                ImageFormat = image.ContentType,
+                CauseId = cause.Id,
+                Cause = cause
+            };
+
+            var memoryStream = new MemoryStream();
+            image.CopyTo(memoryStream);
+            photo.Image = memoryStream.ToArray();
+
+            cause.Photos = new List<PhotoCause>() { photo };
+
+            await this.repository.AddAsync(cause);
+            await this.repository.SaveChangesAsync();
         }
     }
 }
