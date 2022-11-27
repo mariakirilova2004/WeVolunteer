@@ -8,6 +8,7 @@ using WeVolunteer.Extensions;
 using WeVolunteer.Core.Services.User;
 using WeVolunteer.Core.Services.Organization;
 using WeVolunteer.Core.Services.Category;
+using System.Globalization;
 
 namespace WeVolunteer.Controllers
 {
@@ -48,6 +49,7 @@ namespace WeVolunteer.Controllers
             return View(query);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id, string information)
         {
             if (!await this.causeService.Exists(id))
@@ -67,6 +69,7 @@ namespace WeVolunteer.Controllers
             return View(causeModel);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Add()
         {
@@ -81,6 +84,7 @@ namespace WeVolunteer.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(AddCauseFormModel model)
         {
@@ -149,6 +153,7 @@ namespace WeVolunteer.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult Mine([FromQuery] MineCausesQueryModel query)
         {
 
@@ -177,6 +182,140 @@ namespace WeVolunteer.Controllers
                 TempData[MessageConstant.WarningMessage] = "You should become an organization!";
                 return RedirectToAction("Become", "Organization");
             }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (! await this.causeService.Exists(id))
+            {
+                TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                return RedirectToAction(nameof(All));
+            }
+
+            if (! await this.causeService.IsMadeBy(id, this.User.Id()))
+            {
+                TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                return RedirectToAction("Mine", "Cause");
+            }
+
+            var cause = this.causeService.CauseDeatilsById(id);
+            var causeCategoryId = this.categoryService.GetCategoryIdByCategoryName(cause.CategoryName);
+
+            var causeModel = new AddCauseFormModel()
+            {
+                Name = cause.Name,
+                Place = cause.Place,
+                Time = cause.Time,
+                Description = cause.Description,
+                Image = null,
+                CategoryId = causeCategoryId,
+                Categories = this.categoryService.GetAll()
+            };
+
+            return View(causeModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult>  Edit(int id, AddCauseFormModel model)
+        {
+            if (!await this.causeService.Exists(id))
+            {
+                TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await this.causeService.IsMadeBy(id, this.User.Id()))
+            {
+                TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                return RedirectToAction("Mine", "Cause");
+            }
+
+            if (!this.categoryService.CategoryExists(model.CategoryId))
+            {
+                TempData[MessageConstant.ErrorMessage] = "Category does not exists!";
+                model.Categories = this.categoryService.GetAll();
+                return View(model);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = this.categoryService.GetAll();
+                TempData[MessageConstant.ErrorMessage] = "Invalid edit!";
+                return View(model);
+            }
+
+            await this.causeService.Edit(id, model.Name, model.Place,
+                                   model.Time, model.Description,
+                                   model.Image, model.CategoryId);
+
+            return RedirectToAction(nameof(Details), new { id = id, information = model.GetInformation() });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!await this.causeService.Exists(id))
+            {
+                TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await this.causeService.IsMadeBy(id, this.User.Id()))
+            {
+                TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                return RedirectToAction("Mine", "Cause");
+            }
+
+            var cause = this.causeService.CauseDeatilsById(id);
+
+
+            return View(cause);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Delete(CauseDetailsViewModel model)
+        {
+            if (!await this.causeService.Exists(model.Id))
+            {
+                TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await this.causeService.IsMadeBy(model.Id, this.User.Id()))
+            {
+                TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                return RedirectToAction("Mine", "Cause");
+            }
+
+            await this.causeService.Delete(model.Id);
+
+            return RedirectToAction(nameof(Mine));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Cancel(CauseDetailsViewModel model)
+        {
+            if (!await this.causeService.Exists(model.Id))
+            {
+                TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await this.causeService.IsMadeBy(model.Id, this.User.Id()))
+            {
+                TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                return RedirectToAction("Mine", "Cause");
+            }
+
+            this.causeService.Cancel(model.Id);
+
+            return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿@using WeVolunteer.Core.Models.Cause;
-
-@model AddCauseFormModel
+﻿@model AddCauseFormModel
 
 @{
-    ViewData["Title"] = "Add Cause";
+    ViewData["Title"] = "Edit Cause";
 }
 
 <div class="container">
@@ -27,8 +25,8 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-6 col-12">    
-                        <input class="form-control" asp-for="@Model.Time" value="01/01/2023" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                    <div class="col-lg-6 col-12">      
+                        <input class="form-control" asp-for="@Model.Time"  asp-format="{0:yyyy-MM-ddTHH:mm}" />
                         <span asp-validation-for="@Model.Time" class="text-danger"></span>
                     </div>    
                     <div class="col-lg-6 col-12">
@@ -49,7 +47,8 @@
                 </div>
 
                 <div class="col-lg-12 col-12">   
-                    <input asp-for="Image" aria-required="false" class="form-control" accept="image/*" />
+                    <input asp-for="Image" class="form-control" accept="image/*" />
+                    <span asp-validation-for="@Model.Image" class="text-danger"></span>
                 </div>
 
                 <button type="submit" class="form-control">Submit</button> 

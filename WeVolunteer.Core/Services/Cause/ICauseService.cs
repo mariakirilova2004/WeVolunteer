@@ -34,5 +34,8 @@ namespace WeVolunteer.Core.Services.Cause
         MineCausesQueryModel Mine(string category, string searchTerm, CauseSorting sorting, int currentPage, int causesPerPage, string userId);
         bool CauseWithNameExists(string name, string userId);
         Task CreateAsync(int organizationId, string name, string place, DateTime time, string description, IFormFile image, int categoryId);
+        Task Edit(int id, string name, string place, DateTime time, string description, IFormFile image, int categoryId);
+        Task Delete(int id);
+        Task Cancel(int id);
     }
 }

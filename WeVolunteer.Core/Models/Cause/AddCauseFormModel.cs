@@ -10,7 +10,7 @@ using static WeVolunteer.Infrastructure.Data.DataConstants.Cause;
 
 namespace WeVolunteer.Core.Models.Cause
 {
-    public class AddCauseFormModel
+    public class AddCauseFormModel : ICauseModel
     {
         [Required]
         [StringLength(CauseMaxLengthName, ErrorMessage = "Must be between {2} and {1} characters long.", MinimumLength = CauseMinLengthName)]

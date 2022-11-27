@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeVolunteer.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    partial class WeVolunteerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221127211353_ChangedDeleteBehavior")]
+    partial class ChangedDeleteBehavior
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -506,7 +508,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
                         .WithMany("Causes")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");

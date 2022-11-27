@@ -9,5 +9,7 @@ namespace WeVolunteer.Core.Services.Category
     public interface ICategoryService
     {
         List<Infrastructure.Data.Entities.Category> GetAll();
+        int GetCategoryIdByCategoryName(string categoryName);
+        bool CategoryExists(int categoryId);
     }
 }

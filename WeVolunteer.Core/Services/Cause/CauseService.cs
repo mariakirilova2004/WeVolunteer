@@ -255,5 +255,47 @@ namespace WeVolunteer.Core.Services.Cause
             await this.repository.AddAsync(cause);
             await this.repository.SaveChangesAsync();
         }
+
+        public async Task Edit(int id, string name, string place, DateTime time, string description, IFormFile image, int categoryId)
+        {
+            var sanitalizer = new HtmlSanitizer();
+
+            var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
+
+            cause.OrganizationId = id;
+            cause.Name = sanitalizer.Sanitize(name);
+            cause.Place = sanitalizer.Sanitize(place);
+            cause.Time = time;
+            cause.Description = sanitalizer.Sanitize(description);
+            cause.CategoryId = categoryId;
+
+            var photo = new Infrastructure.Data.Entities.PhotoCause()
+            {
+                ImageFormat = image.ContentType,
+                CauseId = cause.Id,
+                Cause = cause
+            };
+
+            var memoryStream = new MemoryStream();
+            image.CopyTo(memoryStream);
+            photo.Image = memoryStream.ToArray();
+
+            GetPhotosByCauseId(cause.Id).Add(photo);
+
+            await this.repository.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
+            cause.Organization = null;
+            await this.repository.DeleteAsync<Infrastructure.Data.Entities.Cause>(id);
+            await this.repository.SaveChangesAsync();
+        }
+
+        public async Task Cancel(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

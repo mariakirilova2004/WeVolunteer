@@ -39,7 +39,7 @@ namespace WeVolunteer.Infrastructure.Data
             modelBuilder.Entity<Organization>()
                .HasMany(o => o.Causes)
                .WithOne(c => c.Organization)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.ClientCascade);
 
             modelBuilder.Entity<PhotoOrganization>()
                .HasOne(po => po.Organization)
@@ -57,7 +57,7 @@ namespace WeVolunteer.Infrastructure.Data
             modelBuilder.Entity<Cause>()
                 .HasOne(c => c.Organization)
                 .WithMany(o => o.Causes)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<Cause>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Cause>()
@@ -67,7 +67,7 @@ namespace WeVolunteer.Infrastructure.Data
             modelBuilder.Entity<Cause>()
                 .HasOne(c => c.Category)
                 .WithMany(c => c.Causes)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Cause>()
                 .HasKey(c => c.Id); 
 
