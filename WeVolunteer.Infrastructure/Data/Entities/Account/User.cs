@@ -37,5 +37,11 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         /// </summary>
         [Required]
         public DateTime BirthDate { get; set; }
+
+        /// <summary>
+        /// Contains the list of the causes of the user
+        /// </summary>
+        [Required]
+        public List<Cause> Causes { get; set; } = new List<Cause>();
     }
 }

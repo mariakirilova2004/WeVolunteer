@@ -39,7 +39,7 @@ namespace WeVolunteer.Infrastructure.Data
             modelBuilder.Entity<Organization>()
                .HasMany(o => o.Causes)
                .WithOne(c => c.Organization)
-               .OnDelete(DeleteBehavior.ClientCascade);
+               .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PhotoOrganization>()
                .HasOne(po => po.Organization)
@@ -57,7 +57,7 @@ namespace WeVolunteer.Infrastructure.Data
             modelBuilder.Entity<Cause>()
                 .HasOne(c => c.Organization)
                 .WithMany(o => o.Causes)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Cause>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Cause>()
@@ -69,7 +69,17 @@ namespace WeVolunteer.Infrastructure.Data
                 .WithMany(c => c.Causes)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Cause>()
-                .HasKey(c => c.Id); 
+            .HasMany(x => x.Users)
+            .WithMany(x => x.Causes);
+
+            modelBuilder.Entity<User>()
+            .HasMany(x => x.Causes)
+            .WithMany(x => x.Users)
+            .UsingEntity<Dictionary<string, object>>(
+            "JoinUserWithCause",
+            j => j.HasOne<Cause>().WithMany().OnDelete(DeleteBehavior.Cascade),
+            j => j.HasOne<User>().WithMany().OnDelete(DeleteBehavior.ClientCascade));
+
 
             base.OnModelCreating(modelBuilder);
         }

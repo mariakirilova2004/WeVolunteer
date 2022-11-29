@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using WeVolunteer.Core.Services.Cause
 @using WeVolunteer.Core.Services.Organization
 @using WeVolunteer.Extensions
 @using WeVolunteer.Infrastructure.Data.Entities.Account
 @inject SignInManager<User> SignInManager;
 @inject IOrganizationService organizationService;
+@inject ICauseService causeService;
 
 @model CauseDetailsViewModel 
 
@@ -26,11 +28,22 @@
     }
     else
     {
-        <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="TakePart" asp-route-id="@Model.Id" method="post">
-            <h5 class="mb-4">Become part of this cause</h5>
+        @if(causeService.IsAlreadyPart(User.Id(), @Model.Id))
+        {
+            <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Cancel" asp-route-id="@Model.Id" method="post">
+                <h5 class="mb-4">Become part of this cause</h5>
             
-            <button type="submit" class="form-control">Take Part</button>
-        </form>
+                <button type="submit" class="form-control">Cancel</button>
+            </form>
+        }
+        else
+        {
+            <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="TakePart" asp-route-id="@Model.Id" method="post">
+                <h5 class="mb-4">Become part of this cause</h5>
+            
+                <button type="submit" class="form-control">Take Part</button>
+            </form>
+        }
     }
 }
 else

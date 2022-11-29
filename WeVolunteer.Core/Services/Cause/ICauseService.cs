@@ -37,5 +37,6 @@ namespace WeVolunteer.Core.Services.Cause
         Task Edit(int id, string name, string place, DateTime time, string description, IFormFile image, int categoryId);
         Task Delete(int id);
         Task Cancel(int id);
+        public bool IsAlreadyPart(string userId, int id);
     }
 }

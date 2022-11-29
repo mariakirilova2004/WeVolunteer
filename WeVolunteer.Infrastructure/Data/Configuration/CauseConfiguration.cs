@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WeVolunteer.Infrastructure.Data.Entities;
 using WeVolunteer.Infrastructure.Data.Entities;
+using WeVolunteer.Infrastructure.Data.Entities.Account;
 
 namespace WeVolunteer.Infrastructure.Data.Configuration
 {
@@ -30,7 +31,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Users = new List<Entities.Account.User>(),
+                Users = new List<User>(),
                 CategoryId = 3
             };
 
@@ -45,7 +46,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Users = new List<Entities.Account.User>(),
+                Users = new List<User>(),
                 CategoryId = 4
             };
 
@@ -60,7 +61,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Users = new List<Entities.Account.User>(),
+                Users = new List<User>(),
                 CategoryId = 1
             };
 
@@ -75,7 +76,7 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 OrganizationId = 1,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 Photos = new List<PhotoCause>(),
-                Users = new List<Entities.Account.User>(),
+                Users = new List<User>(),
                 CategoryId = 2
             };
 

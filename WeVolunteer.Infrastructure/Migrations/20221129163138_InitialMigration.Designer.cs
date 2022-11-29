@@ -12,8 +12,8 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    [Migration("20221126001220_AddedCategories")]
-    partial class AddedCategories
+    [Migration("20221129163138_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace WeVolunteer.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("JoinUserWithCause", b =>
+                {
+                    b.Property<int>("CausesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CausesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("JoinUserWithCause");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -206,9 +221,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CauseId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -266,8 +278,6 @@ namespace WeVolunteer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CauseId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -428,6 +438,21 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.ToTable("PhotosOrganizations");
                 });
 
+            modelBuilder.Entity("JoinUserWithCause", b =>
+                {
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", null)
+                        .WithMany()
+                        .HasForeignKey("CausesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -490,25 +515,18 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Account.User", b =>
-                {
-                    b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Cause", null)
-                        .WithMany("Users")
-                        .HasForeignKey("CauseId");
-                });
-
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
                 {
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Category", "Category")
                         .WithMany("Causes")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WeVolunteer.Infrastructure.Data.Entities.Account.Organization", "Organization")
                         .WithMany("Causes")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -553,8 +571,6 @@ namespace WeVolunteer.Infrastructure.Migrations
             modelBuilder.Entity("WeVolunteer.Infrastructure.Data.Entities.Cause", b =>
                 {
                     b.Navigation("Photos");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

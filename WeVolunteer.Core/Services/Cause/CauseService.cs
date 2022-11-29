@@ -169,9 +169,13 @@ namespace WeVolunteer.Core.Services.Cause
             var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
             var user = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.User>(userId);
 
+
+            user.Causes.Add(cause);
             cause.Users.Add(user);
 
+            this.repository.Update(user);
             this.repository.Update(cause);
+
             await this.repository.SaveChangesAsync();
         }
 
@@ -262,6 +266,8 @@ namespace WeVolunteer.Core.Services.Cause
 
             var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
 
+            this.repository.Detach(cause);
+
             cause.OrganizationId = id;
             cause.Name = sanitalizer.Sanitize(name);
             cause.Place = sanitalizer.Sanitize(place);
@@ -282,20 +288,28 @@ namespace WeVolunteer.Core.Services.Cause
 
             GetPhotosByCauseId(cause.Id).Add(photo);
 
+            this.repository.Update(cause);
             await this.repository.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
             var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);
+            this.repository.Detach(cause);
+            cause.Users.Clear();
             cause.Organization = null;
-            await this.repository.DeleteAsync<Infrastructure.Data.Entities.Cause>(id);
+            this.repository.Delete(cause);
             await this.repository.SaveChangesAsync();
         }
 
         public async Task Cancel(int id)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public bool IsAlreadyPart(string userId, int id)
+        {
+            return this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id).Result.Users.Any(u => u.Id == userId);
         }
     }
 }
