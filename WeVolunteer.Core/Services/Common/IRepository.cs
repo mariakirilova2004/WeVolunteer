@@ -24,6 +24,7 @@ namespace WeVolunteer.Core.Services
         /// </summary>
         /// <returns>Queryable expression tree</returns>
         IQueryable<T> All<T>(Expression<Func<T, bool>> search) where T : class;
+        IQueryable<T> All<T, TVal>(Expression<Func<T, List<TVal>>> search) where T : class where TVal : class;
 
         /// <summary>
         /// The result collection won't be tracked by the context

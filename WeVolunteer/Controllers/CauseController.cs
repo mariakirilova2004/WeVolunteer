@@ -307,15 +307,15 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await this.causeService.IsMadeBy(model.Id, this.User.Id()))
+            if (!this.causeService.IsAlreadyPart(this.User.Id(), model.Id))
             {
-                TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
-                return RedirectToAction("Mine", "Cause");
+                TempData[MessageConstant.WarningMessage] = "You ae not part of this cause!";
+                return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
             }
 
-            this.causeService.Cancel(model.Id);
+            await this.causeService.Cancel(model.Id, this.User.Id());
 
-            return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
+            return RedirectToAction(nameof(All));
         }
     }
 }

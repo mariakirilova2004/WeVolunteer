@@ -69,6 +69,11 @@ namespace WeVolunteer.Core.Services
             return this.DbSet<T>().Where(search);
         }
 
+        public IQueryable<T> All<T, TVal>(Expression<Func<T, List<TVal>>> search) where T : class where TVal : class
+        {
+            return this.DbSet<T>().Include(search);
+        }
+
         /// <summary>
         /// The result collection won't be tracked by the context
         /// </summary>

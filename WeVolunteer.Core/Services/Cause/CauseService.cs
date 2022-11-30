@@ -302,14 +302,20 @@ namespace WeVolunteer.Core.Services.Cause
             await this.repository.SaveChangesAsync();
         }
 
-        public async Task Cancel(int id)
+        public async Task Cancel(int id, string userId)
         {
-
+            var causes = this.repository.All<Infrastructure.Data.Entities.Cause, Infrastructure.Data.Entities.Account.User>(c => c.Users);
+            var cause = causes.Where(c => c.Id == id && c.Users.Any(u => u.Id == userId)).ToList();
+            var user = cause[0].Users.Find(u  => u.Id == userId);
+            cause[0].Users.Remove(user);
+            await this.repository.SaveChangesAsync(); 
         }
 
         public bool IsAlreadyPart(string userId, int id)
         {
-            return this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id).Result.Users.Any(u => u.Id == userId);
+            var cause = this.repository.All<Infrastructure.Data.Entities.Cause>(c => c.Id == id && c.Users.Any(u => u.Id == userId)).ToList();
+
+            return cause.Count != 0;
         }
     }
 }
