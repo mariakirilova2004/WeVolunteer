@@ -11,6 +11,7 @@ using WeVolunteer.Core.Services.Organization;
 using WeVolunteer.Core.Models.Photos;
 using Microsoft.AspNetCore.Http;
 using Ganss.Xss;
+using WeVolunteer.Core.Models.User;
 
 //using WeVolunteer.Core.Exceptions;
 
@@ -20,11 +21,13 @@ namespace WeVolunteer.Core.Services.Cause
     {
         private readonly IRepository repository;
         private readonly IOrganizationService organizationService;
+        private readonly IOrganizationService categoryService;
 
-        public CauseService(IRepository _repository, IOrganizationService _organizationService)
+        public CauseService(IRepository _repository, IOrganizationService _organizationService, IOrganizationService _categoryService)
         {
             this.repository = _repository;
             this.organizationService = _organizationService;
+            this.categoryService = _categoryService;
         }
 
         public AllCausesQueryModel All(string category = "",
@@ -181,6 +184,10 @@ namespace WeVolunteer.Core.Services.Cause
 
         public CauseDetailsViewModel CauseDeatilsById(int id)
         {
+            var causes = this.repository.All<Infrastructure.Data.Entities.Cause, Infrastructure.Data.Entities.Account.User>(c => c.Users);
+            var cause = causes.Where(c => c.Id == id).ToList()[0];
+            var users = cause.Users.Select(u => new CauseUsersViewModel { FirstName = u.FirstName, LastName = u.LastName, Email = u.Email }).ToList();
+
             return this.repository
                     .All<Infrastructure.Data.Entities.Cause>(c => c.Id == id)
                     .Select(c => new CauseDetailsViewModel()
@@ -191,12 +198,13 @@ namespace WeVolunteer.Core.Services.Cause
                         Description = c.Description,
                         Time = c.Time,
                         OrganizationName = c.Organization.Name,
-                        Photos = c.Photos.Select( p => new PhotoViewModel
+                        Photos = c.Photos.Select(p => new PhotoViewModel
                         {
                             Image = Convert.ToBase64String(p.Image),
                             ImageFormat = p.ImageFormat
                         }).ToList(),
-                        CategoryName = c.Category.Name
+                        CategoryName = c.Category.Name,
+                        Users = users
                     })
                     .FirstOrDefault();
         }

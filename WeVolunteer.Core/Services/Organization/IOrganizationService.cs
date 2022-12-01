@@ -28,5 +28,6 @@ namespace WeVolunteer.Core.Services.Organization
         string GetOrganizationName(string userId);
         AllOrganizationsQueryModel All(string category, string searchTerm, int currentPage, int organizationsPerPage);
         IEnumerable<string> AllCategoriesNames();
+        string GetOrganizationNameById(int organizationId);
     }
 }

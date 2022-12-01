@@ -73,7 +73,7 @@ namespace WeVolunteer.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            if (!this.organizationService.ExistsById(this.User.Id()))
+            if (!this.organizationService.ExistsById(this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You should become an organization!";
                 return RedirectToAction("Become", "Organization");
@@ -92,13 +92,13 @@ namespace WeVolunteer.Controllers
 
             model.Categories = categoryService.GetAll();
 
-            if (!this.organizationService.ExistsById(userId))
+            if (!this.organizationService.ExistsById(userId) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You should become an organization!";
                 return RedirectToAction("Become", "Organization");
             }
 
-            if (this.causeService.CauseWithNameExists(model.Name, userId))
+            if (this.causeService.CauseWithNameExists(model.Name, userId) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.ErrorMessage] = "Cause with such name from your organization already exists. Enter another one.";
                 return View(model);
@@ -128,7 +128,7 @@ namespace WeVolunteer.Controllers
         [HttpPost]
         public async Task<IActionResult> TakePart(int id)
         {
-            if (await this.causeService.IsMadeBy(id, this.User.Id()))
+            if (await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You cannot take part in your own cause!";
                 return RedirectToAction(nameof(All));
@@ -140,7 +140,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!this.userService.IdExists(this.User.Id()))
+            if (!this.userService.IdExists(this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You should log into your account!";
                 return RedirectToAction("Login", "User");
@@ -159,7 +159,7 @@ namespace WeVolunteer.Controllers
 
             var userId = this.User.Id();
 
-            if (this.organizationService.ExistsById(userId))
+            if (this.organizationService.ExistsById(userId) || this.User.IsAdmin())
             {
                 var queryResult = this.causeService.Mine(
                 query.Category,
@@ -188,13 +188,13 @@ namespace WeVolunteer.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            if (! await this.causeService.Exists(id))
+            if (!await this.causeService.Exists(id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
                 return RedirectToAction(nameof(All));
             }
 
-            if (! await this.causeService.IsMadeBy(id, this.User.Id()))
+            if (! await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
                 return RedirectToAction("Mine", "Cause");
@@ -227,7 +227,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await this.causeService.IsMadeBy(id, this.User.Id()))
+            if (!await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
                 return RedirectToAction("Mine", "Cause");
@@ -264,7 +264,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await this.causeService.IsMadeBy(id, this.User.Id()))
+            if (!await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
                 return RedirectToAction("Mine", "Cause");
@@ -286,7 +286,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await this.causeService.IsMadeBy(model.Id, this.User.Id()))
+            if (!await this.causeService.IsMadeBy(model.Id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
                 return RedirectToAction("Mine", "Cause");
@@ -309,7 +309,7 @@ namespace WeVolunteer.Controllers
 
             if (!this.causeService.IsAlreadyPart(this.User.Id(), model.Id))
             {
-                TempData[MessageConstant.WarningMessage] = "You ae not part of this cause!";
+                TempData[MessageConstant.WarningMessage] = "You are not part of this cause!";
                 return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
             }
 

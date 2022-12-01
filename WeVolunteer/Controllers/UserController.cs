@@ -118,7 +118,7 @@ namespace WeVolunteer.Controllers
                 return View(model);
             }
 
-            var user = userManager.Users.First(u => u.Email == model.Email);
+            var user = userManager.Users.Where(u => u.Email == model.Email).FirstOrDefault();
 
             if (user != null)
             {

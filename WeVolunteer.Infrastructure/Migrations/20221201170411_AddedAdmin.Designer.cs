@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeVolunteer.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    partial class WeVolunteerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201170411_AddedAdmin")]
+    partial class AddedAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,7 +216,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
                             Headquarter = "Sofia, Bulgaria",
                             Name = "Admin organization",
-                            UserId = "deal12856 - c198 - 4129 - b3f3 - b893d8395082"
+                            UserId = "deal12856-c198-4129-b3f3-b893d8395082"
                         });
                 });
 
@@ -300,10 +302,10 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "deal12856 - c198 - 4129 - b3f3 - b893d8395082",
+                            Id = "deal12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "a5dd4e87-e40a-455a-bf5e-5ee4d40a4eec",
+                            ConcurrencyStamp = "0124e86e-b185-422a-a662-d88c325712b7",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -311,10 +313,10 @@ namespace WeVolunteer.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@MAIL.COM",
                             NormalizedUserName = "USERQ",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMDY1p/XpQqlLz1JSYksmMwecyJ644S2nuBx5R0nc4AmWhUjofusxETe9WbF+tVUAA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENwN9lryqkaw6SVRzRkWp5LN6YNVIUXrxEgBbZMa1Zx7+znIOLcufa2bA6lh3el7ng==",
                             PhoneNumber = "0888888888",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06dd867d-a8a1-4359-9de2-82dc0b800b0a",
+                            SecurityStamp = "86cc400f-b22f-4fea-a914-2f6f3c93bf8a",
                             TwoFactorEnabled = false,
                             UserName = "USERQ"
                         });

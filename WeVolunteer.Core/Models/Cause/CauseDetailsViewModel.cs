@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeVolunteer.Core.Models.Photos;
+using WeVolunteer.Core.Models.User;
 
 namespace WeVolunteer.Core.Models.Cause
 {
@@ -17,5 +18,6 @@ namespace WeVolunteer.Core.Models.Cause
         public string Description { get; set; }
         public List<PhotoViewModel> Photos { get; set; }
         public string CategoryName { get; set; }
+        public List<CauseUsersViewModel> Users { get; set; }
     }
 }

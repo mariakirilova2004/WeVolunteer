@@ -4,11 +4,15 @@ using WeVolunteer.Infrastructure.Data.Entities;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
 using WeVolunteer.Infrastructure.Data.Configuration;
 using WeVolunteer.Infrastructure.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace WeVolunteer.Infrastructure.Data
 {
     public class WeVolunteerDbContext : IdentityDbContext<User>
     {
+        private User userAdmin { get; set; }
+        private Organization organizationAdmin { get; set; }
+
         public WeVolunteerDbContext(DbContextOptions<WeVolunteerDbContext> options)
             : base(options)
         {
@@ -30,6 +34,20 @@ namespace WeVolunteer.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             //modelBuilder.ApplyConfiguration(new CauseConfiguration());
 
+            SeedAdminUser();
+
+            modelBuilder.Entity<User>()
+            .HasMany(x => x.Causes)
+            .WithMany(x => x.Users)
+            .UsingEntity<Dictionary<string, object>>(
+            "JoinUserWithCause",
+            j => j.HasOne<Cause>().WithMany().OnDelete(DeleteBehavior.Cascade),
+            j => j.HasOne<User>().WithMany().OnDelete(DeleteBehavior.ClientCascade));
+            modelBuilder.Entity<User>()
+               .HasData(this.userAdmin);
+
+            SeedAdminOrganization();
+
             modelBuilder.Entity<Organization>()
                .HasKey(o => o.Id);
             modelBuilder.Entity<Organization>()
@@ -40,6 +58,8 @@ namespace WeVolunteer.Infrastructure.Data
                .HasMany(o => o.Causes)
                .WithOne(c => c.Organization)
                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Organization>()
+               .HasData(this.organizationAdmin);
 
             modelBuilder.Entity<PhotoOrganization>()
                .HasOne(po => po.Organization)
@@ -72,16 +92,42 @@ namespace WeVolunteer.Infrastructure.Data
             .HasMany(x => x.Users)
             .WithMany(x => x.Causes);
 
-            modelBuilder.Entity<User>()
-            .HasMany(x => x.Causes)
-            .WithMany(x => x.Users)
-            .UsingEntity<Dictionary<string, object>>(
-            "JoinUserWithCause",
-            j => j.HasOne<Cause>().WithMany().OnDelete(DeleteBehavior.Cascade),
-            j => j.HasOne<User>().WithMany().OnDelete(DeleteBehavior.ClientCascade));
-
-
             base.OnModelCreating(modelBuilder);
+        }
+
+        void SeedAdminUser()
+        {
+            var hasher = new PasswordHasher<User>();
+
+            this.userAdmin = new User()
+            {
+                Id = "deal12856 - c198 - 4129 - b3f3 - b893d8395082",
+                FirstName = "User",
+                LastName = "Userov",
+                Email = "user@mail.com",
+                NormalizedEmail = "USER@MAIL.COM",
+                UserName = "USERQ",
+                NormalizedUserName = "USERQ",
+                PhoneNumber = "0888888888",
+                BirthDate = new DateTime(2000, 1, 1),
+                Causes = new List<Cause>()
+            };
+
+            this.userAdmin.PasswordHash = hasher.HashPassword(this.userAdmin, "user123");
+        }
+
+        void SeedAdminOrganization()
+        {
+            this.organizationAdmin = new Organization()
+            {
+                Id = 2,
+                Name = "Admin organization",
+                Headquarter = "Sofia, Bulgaria",
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                Photos = new List<PhotoOrganization>(),
+                Causes = new List<Cause>(),
+                UserId = this.userAdmin.Id
+            };
         }
     }
 }

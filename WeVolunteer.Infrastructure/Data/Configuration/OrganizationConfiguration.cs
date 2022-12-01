@@ -15,9 +15,9 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Organization> builder)
         {
-            builder.HasData(new Organization
+            builder.HasData(new Organization()
             {
-                Id = 1,
+                Id = 2,
                 Name = "Admin organization",
                 Headquarter = "Sofia, Bulgaria",
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",

@@ -166,6 +166,12 @@ namespace WeVolunteer.Core.Services.Organization
         public PhotoOrganization GetPhotoOrganizationByOrganizationId(int id)
         {
             return repository.All<Infrastructure.Data.Entities.PhotoOrganization>(po => po.OrganizationId == id).ToList().First();
-        } 
+        }
+
+        public string GetOrganizationNameById(int organizationId)
+        {
+            string name =  this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.Organization>(organizationId).Result.Name;
+            return name;
+        }
     }
 }

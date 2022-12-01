@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using WeVolunteer.Core.Services;
 using WeVolunteer.Core.Services.Cause;
 using WeVolunteer.Core.Services.User;
+using WeVolunteer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,9 @@ builder.Services.AddDefaultIdentity<User>(options =>
     options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric"); ;
     options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:RequireUppercase"); ;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<WeVolunteerDbContext>();
+
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
@@ -51,6 +54,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     });
 
 var app = builder.Build();
+
+app.SeedAdmin();
 
 if (app.Environment.IsDevelopment())
 {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeVolunteer.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    partial class WeVolunteerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201173225_AddedAdmin2")]
+    partial class AddedAdmin2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,7 +305,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                             Id = "deal12856 - c198 - 4129 - b3f3 - b893d8395082",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "a5dd4e87-e40a-455a-bf5e-5ee4d40a4eec",
+                            ConcurrencyStamp = "8aea7dde-cae1-490e-8b1d-7e4c466d8bb5",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -311,10 +313,10 @@ namespace WeVolunteer.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@MAIL.COM",
                             NormalizedUserName = "USERQ",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMDY1p/XpQqlLz1JSYksmMwecyJ644S2nuBx5R0nc4AmWhUjofusxETe9WbF+tVUAA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMz9vbfq7bFQ8ndCwe0GVZGTa7IKl+HKgXIZaSxxemgM0/+csbo5YptwoZ/Uk4bpCw==",
                             PhoneNumber = "0888888888",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06dd867d-a8a1-4359-9de2-82dc0b800b0a",
+                            SecurityStamp = "5ff3e8a1-5cdd-4f9d-a0da-4af657bef1ed",
                             TwoFactorEnabled = false,
                             UserName = "USERQ"
                         });

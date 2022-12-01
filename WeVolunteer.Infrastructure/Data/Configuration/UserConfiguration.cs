@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Infrastructure.Data.Entities;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
 
 namespace WeVolunteer.Infrastructure.Data.Configuration
@@ -14,13 +15,12 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasData(CreateUsers());
+            builder.HasData(CreateUser());
         }
 
-        private List<User> CreateUsers()
+        private User CreateUser()
         {
-            var users = new List<User>();
-            var hasher = new PasswordHasher<IdentityUser>();
+            var hasher = new PasswordHasher<User>();
 
             var user = new User()
             {
@@ -32,14 +32,12 @@ namespace WeVolunteer.Infrastructure.Data.Configuration
                 UserName = "USERQ",
                 NormalizedUserName = "USERQ",
                 PhoneNumber = "0888888888",
-                BirthDate = new DateTime(2000, 1, 1)
+                BirthDate = new DateTime(2000, 1, 1),
+                Causes = new List<Cause>()
             };
 
             user.PasswordHash = hasher.HashPassword(user, "user123");
-
-            users.Add(user);
-
-            return users;
+            return user;
         }
     }
 }
