@@ -11,5 +11,7 @@ namespace WeVolunteer.Core.Services.User
     {
         public bool EmailExists(string email);
         bool IdExists(string userId);
+        public bool NameExists(string name);
+
     }
 }

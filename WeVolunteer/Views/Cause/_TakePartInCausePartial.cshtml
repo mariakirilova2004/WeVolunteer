@@ -14,35 +14,46 @@
     @if ((organizationService.GetOrganizationByUserId(User.Id()) != null && organizationService.GetOrganizationByUserId(User.Id()).Name == Model.OrganizationName) || User.IsAdmin())
     {
         <h5 class="mb-4">Manage your cause</h5>
-        <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Edit" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" method="get">
-            
-            <button type="submit" class="form-control">Edit</button>
 
-        </form>
-        <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Delete" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" method="get">
-            
-            <button type="submit" class="form-control">Delete</button>
+        <div class="col-lg-6 col-lg-12  text-center mb-4 ">
+                <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Edit" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" method="get">
+                    
+                    <button type="submit" class="form-control">Edit</button>
 
-        </form>
+                </form>
+                <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Delete" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" method="get">
+                    
+                    <button type="submit" class="form-control">Delete</button>
+
+                </form>
+        </div>
                     
     }
     else
     {
         @if(causeService.IsAlreadyPart(User.Id(), @Model.Id))
         {
-            <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Cancel" asp-route-id="@Model.Id" method="post">
-                <h5 class="mb-4">Become part of this cause</h5>
-            
-                <button type="submit" class="form-control">Cancel</button>
-            </form>
+            <h5 class="mb-4">You are part of this cause</h5>
+
+            <div class="col-lg-6 col-lg-12 text-center mb-4 ">
+                <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="Cancel" asp-route-id="@Model.Id" method="post">
+                    
+                
+                    <button type="submit" class="form-control">Cancel</button>
+                </form>
+            </div>
         }
         else
         {
-            <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="TakePart" asp-route-id="@Model.Id" method="post">
-                <h5 class="mb-4">Become part of this cause</h5>
-            
-                <button type="submit" class="form-control">Take Part</button>
-            </form>
+            <h5 class="mb-4">Become part of this cause</h5>
+
+            <div class="col-lg-6 col-lg-12 text-center mb-4 ">
+                <form class="custom-form subscribe-form" asp-controller="Cause" asp-action="TakePart" asp-route-id="@Model.Id" method="post">
+                    
+                
+                    <button type="submit" class="form-control">Take Part</button>
+                </form>
+            </div>
         }
     }
 }

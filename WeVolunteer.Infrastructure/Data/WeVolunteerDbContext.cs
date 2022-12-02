@@ -10,13 +10,22 @@ namespace WeVolunteer.Infrastructure.Data
 {
     public class WeVolunteerDbContext : IdentityDbContext<User>
     {
+        private bool seedDb;
         private User userAdmin { get; set; }
         private Organization organizationAdmin { get; set; }
 
-        public WeVolunteerDbContext(DbContextOptions<WeVolunteerDbContext> options)
+        public WeVolunteerDbContext(DbContextOptions<WeVolunteerDbContext> options, bool seed = true)
             : base(options)
         {
-            base.Database.Migrate();
+            this.seedDb = seed;
+            if (this.Database.IsRelational())
+            {
+                this.Database.Migrate();
+            }
+            else
+            {
+                this.Database.EnsureCreated();
+            }
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -27,14 +36,19 @@ namespace WeVolunteer.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfiguration(new UserConfiguration());
-            //modelBuilder.ApplyConfiguration(new PhotoCauseConfiguration());
-            //modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
-            //modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            //modelBuilder.ApplyConfiguration(new CauseConfiguration());
+            if(this.seedDb)
+            {
+                //modelBuilder.ApplyConfiguration(new UserConfiguration());
+                //modelBuilder.ApplyConfiguration(new PhotoCauseConfiguration());
+                //modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
+                //modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
+                modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+                //modelBuilder.ApplyConfiguration(new CauseConfiguration());
 
-            SeedAdminUser();
+                SeedAdminUser();
+                SeedAdminOrganization();
+            }
+            
 
             modelBuilder.Entity<User>()
             .HasMany(x => x.Causes)
@@ -45,8 +59,6 @@ namespace WeVolunteer.Infrastructure.Data
             j => j.HasOne<User>().WithMany().OnDelete(DeleteBehavior.ClientCascade));
             modelBuilder.Entity<User>()
                .HasData(this.userAdmin);
-
-            SeedAdminOrganization();
 
             modelBuilder.Entity<Organization>()
                .HasKey(o => o.Id);

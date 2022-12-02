@@ -151,22 +151,6 @@ namespace WeVolunteer.Core.Services.Cause
             };
         }
 
-        public IEnumerable<string> AllCategoriesNames()
-        {
-            return this.repository.All<Infrastructure.Data.Entities.Category>()
-                        .Select(c => c.Name)
-                        .Distinct()
-                        .ToList();
-        }
-
-        public IEnumerable<string> MineCategoriesNames(string userId)
-        {
-            return this.repository.All<Infrastructure.Data.Entities.Category>(c => c.Causes.Any(cause => cause.Organization.UserId == userId))
-                        .Select(c => c.Name)
-                        .Distinct()
-                        .ToList();
-        }
-
         public async Task BecomePartAsync(int id, string userId)
         {
             var cause = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(id);

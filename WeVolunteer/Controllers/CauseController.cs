@@ -43,7 +43,7 @@ namespace WeVolunteer.Controllers
             query.TotalCausesCount = queryResult.TotalCausesCount;
             query.Causes = queryResult.Causes;
 
-            var causeCategories = this.causeService.AllCategoriesNames();
+            var causeCategories = this.categoryService.AllCategoriesNames();
             query.Categories = causeCategories;
 
             return View(query);
@@ -172,7 +172,7 @@ namespace WeVolunteer.Controllers
                 query.TotalCausesCount = queryResult.TotalCausesCount;
                 query.Causes = queryResult.Causes;
 
-                var causeCategories = this.causeService.MineCategoriesNames(userId);
+                var causeCategories = this.categoryService.MineCategoriesNames(userId);
                 query.Categories = causeCategories;
 
                 return View(query);

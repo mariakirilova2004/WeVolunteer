@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WeVolunteer.Core.Attributes
+namespace WeVolunteer.Infrastructure.Attributes
 {
-    public class CustomDateAttribute : ValidationAttribute
+    public class CustomCauseDateAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             value = (DateTime)value;
             // This assumes inclusivity, i.e. exactly six years ago is okay
-            if (DateTime.Now.AddYears(-100).CompareTo(value) <= 0 && DateTime.Now.CompareTo(value) >= 0)
+            if (DateTime.Now.AddDays(1).CompareTo(value) >= 0)
             {
                 return ValidationResult.Success;
             }

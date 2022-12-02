@@ -29,5 +29,21 @@ namespace WeVolunteer.Core.Services.Category
         {
             return this.repository.All<Infrastructure.Data.Entities.Category>().ToList();
         }
+
+        public IEnumerable<string> AllCategoriesNames()
+        {
+            return repository.All<Infrastructure.Data.Entities.Category>()
+                        .Select(c => c.Name)
+                        .Distinct()
+                        .ToList();
+        }
+
+        public IEnumerable<string> MineCategoriesNames(string userId)
+        {
+            return this.repository.All<Infrastructure.Data.Entities.Category>(c => c.Causes.Any(cause => cause.Organization.UserId == userId))
+                        .Select(c => c.Name)
+                        .Distinct()
+                        .ToList();
+        }
     }
 }

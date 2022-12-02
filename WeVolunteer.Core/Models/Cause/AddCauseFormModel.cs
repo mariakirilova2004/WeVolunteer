@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Infrastructure.Attributes;
 using WeVolunteer.Infrastructure.Data.Entities;
 using static WeVolunteer.Infrastructure.Data.DataConstants.Cause;
 
@@ -21,6 +22,7 @@ namespace WeVolunteer.Core.Models.Cause
         public string Place { get; set; }
 
         [Required]
+        [CustomBirthDateAttribute]
         public DateTime Time { get; set; }
 
 

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WeVolunteer.Core.Attributes;
+using WeVolunteer.Infrastructure.Attributes;
 using static WeVolunteer.Infrastructure.Data.DataConstants.User;
 
 namespace WeVolunteer.Core.Models.User
@@ -55,7 +55,7 @@ namespace WeVolunteer.Core.Models.User
         /// Contains the birth date of the user
         /// </summary> 
         [Required]
-        [CustomDateAttribute]
+        [CustomBirthDateAttribute]
         public DateTime BirthDate { get; set; }
     }
 }

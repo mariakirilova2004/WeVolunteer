@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Infrastructure.Attributes;
 using static WeVolunteer.Infrastructure.Data.DataConstants.User;
 
 namespace WeVolunteer.Infrastructure.Data.Entities.Account
@@ -36,6 +37,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         /// Contains the birth date of the user
         /// </summary>
         [Required]
+        [CustomBirthDateAttribute]
         public DateTime BirthDate { get; set; }
 
         /// <summary>

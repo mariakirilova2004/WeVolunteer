@@ -11,5 +11,7 @@ namespace WeVolunteer.Core.Services.Category
         List<Infrastructure.Data.Entities.Category> GetAll();
         int GetCategoryIdByCategoryName(string categoryName);
         bool CategoryExists(int categoryId);
+        IEnumerable<string> AllCategoriesNames();
+        IEnumerable<string> MineCategoriesNames(string userId);
     }
 }

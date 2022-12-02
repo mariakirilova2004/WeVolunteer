@@ -19,10 +19,6 @@ namespace WeVolunteer.Core.Services.Cause
                                           int currentPage = 1,
                                           int causesPerPage = 1);
 
-        IEnumerable<string> AllCategoriesNames();
-
-        IEnumerable<string> MineCategoriesNames(string userId);
-
         Task<bool> Exists(int id);
 
         CauseDetailsViewModel CauseDeatilsById(int id);

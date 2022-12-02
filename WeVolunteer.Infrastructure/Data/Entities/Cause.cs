@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Infrastructure.Attributes;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
-using WeVolunteer.Infrastructure.Data.Entities;
 using static WeVolunteer.Infrastructure.Data.DataConstants.Cause;
 
 namespace WeVolunteer.Infrastructure.Data.Entities
@@ -38,6 +38,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         /// Contains the exact time when the cause starts
         /// </summary>
         [Required]
+        [CustomCauseDateAttribute]
         public DateTime Time { get; set; }
 
         /// <summary>

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WeVolunteer.Core.Models.Organization;
 using WeVolunteer.Core.Models.Photos;
+using WeVolunteer.Core.Services.Category;
 using WeVolunteer.Infrastructure.Data;
 using WeVolunteer.Infrastructure.Data.Entities;
 
@@ -15,10 +16,12 @@ namespace WeVolunteer.Core.Services.Organization
     public class OrganizationService : IOrganizationService
     {
         private readonly IRepository repository;
+        private readonly ICategoryService categoryService;
 
-        public OrganizationService(IRepository _repository)
+        public OrganizationService(IRepository _repository, ICategoryService _categoryService)
         {
             this.repository = _repository;
+            this.categoryService = _categoryService;
         }
 
         public AllOrganizationsQueryModel All(string category = null,
@@ -70,14 +73,6 @@ namespace WeVolunteer.Core.Services.Organization
                 TotalOrganizationsCount = TotalOrganizationsCount,
                 Organizations = organizations
             };
-        }
-
-        public IEnumerable<string> AllCategoriesNames()
-        {
-            return repository.All<Infrastructure.Data.Entities.Category>()
-                        .Select(c => c.Name)
-                        .Distinct()
-                        .ToList();
         }
 
         public async Task CreateAsync(string userId, 
@@ -132,7 +127,7 @@ namespace WeVolunteer.Core.Services.Organization
         public string GetOrganizationCategory(int organizationId)
         {
             var organization = GetOrganizationById(organizationId).Result;
-            List<string> categories = AllCategoriesNames().ToList();
+            List<string> categories = this.categoryService.AllCategoriesNames().ToList();
             Dictionary<string, int> categoriesWithTotal = new Dictionary<string, int>();
 
             for (int i = 0; i < categories.Count(); i++)
@@ -152,15 +147,10 @@ namespace WeVolunteer.Core.Services.Organization
             return GetOrganizationByUserId(userId).Name;
         }
 
-        public async Task<bool> UserHasCauses(int organizationId)
+        public async Task<bool> HasCauses(int organizationId)
         {
             var organization = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.Organization>(organizationId);
             return organization.Causes.Count == 0;
-        }
-
-        public bool UserWithNameExists(string name)
-        {
-            return this.repository.All<Infrastructure.Data.Entities.Account.Organization>(o => o.Name == name).ToList().Count > 0;
         }
 
         public PhotoOrganization GetPhotoOrganizationByOrganizationId(int id)
@@ -172,6 +162,11 @@ namespace WeVolunteer.Core.Services.Organization
         {
             string name =  this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.Organization>(organizationId).Result.Name;
             return name;
+        }
+
+        public bool NameExists(string name)
+        {
+            return this.repository.All<Infrastructure.Data.Entities.Account.Organization>(o => o.Name == name).ToList().Count != 0;
         }
     }
 }

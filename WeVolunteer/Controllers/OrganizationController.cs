@@ -4,6 +4,8 @@ using WeVolunteer.Extensions;
 using WeVolunteer.Core.Services.Organization;
 using WeVolunteer.Core.Models.Organization;
 using WeVolunteer.Core.Constants;
+using WeVolunteer.Core.Services.Category;
+using WeVolunteer.Core.Services.User;
 
 namespace WeVolunteer.Controllers
 {
@@ -12,10 +14,14 @@ namespace WeVolunteer.Controllers
     public class OrganizationController : Controller
     {
         private readonly IOrganizationService organizationService;
+        private readonly ICategoryService categoryService;
+        private readonly IUserService userService;
 
-        public OrganizationController(IOrganizationService _organizationService)
+        public OrganizationController(IOrganizationService _organizationService, ICategoryService _categoryService, IUserService _userService)
         {
             this.organizationService = _organizationService;
+            this.categoryService = _categoryService;
+            this.userService = _userService;
         }
 
         [HttpGet]
@@ -42,7 +48,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(CauseController.All), "Cause");
             }
 
-            if (this.organizationService.UserWithNameExists(model.Name))
+            if (this.organizationService.NameExists(model.Name))
             {
                 TempData[MessageConstant.ErrorMessage] = "Organization with such name already exists. Enter another one.";
                 return View(model);
@@ -77,7 +83,7 @@ namespace WeVolunteer.Controllers
             query.TotalOrganizationsCount = queryResult.TotalOrganizationsCount;
             query.Organizations = queryResult.Organizations;
 
-            var organizationCategories = this.organizationService.AllCategoriesNames();
+            var organizationCategories = this.categoryService.AllCategoriesNames();
             query.Categories = organizationCategories;
 
             return View(query);

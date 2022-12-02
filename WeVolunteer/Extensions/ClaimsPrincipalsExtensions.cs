@@ -11,7 +11,7 @@ namespace WeVolunteer.Extensions
 
         public static bool IsAdmin(this ClaimsPrincipal user)
         {
-            return user.Identity.Name == "USERQ";
+            return user.IsInRole("Admin"); ;
         }
     }
 }

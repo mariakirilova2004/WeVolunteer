@@ -26,5 +26,10 @@ namespace WeVolunteer.Core.Services.User
         {
             return this.repository.All<Infrastructure.Data.Entities.Account.User>(u => u.Id == userId).ToList().Count > 0;
         }
+
+        public bool NameExists(string name)
+        {
+            return this.repository.All<Infrastructure.Data.Entities.Account.User>(u => u.UserName == name).ToList().Count > 0;
+        }
     }
 }
