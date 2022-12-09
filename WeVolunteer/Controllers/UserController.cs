@@ -80,10 +80,9 @@ namespace WeVolunteer.Controllers
 
             foreach (var item in result.Errors)
             {
-                ModelState.AddModelError("", item.Description);
+                TempData[MessageConstant.ErrorMessage] = item.Description.ToString();
             }
 
-            TempData[MessageConstant.WarningMessage] = "Something went wrong!";
             return View(model);
         }
 

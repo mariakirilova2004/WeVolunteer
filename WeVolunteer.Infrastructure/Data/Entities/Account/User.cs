@@ -37,7 +37,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         /// Contains the birth date of the user
         /// </summary>
         [Required]
-        [CustomBirthDateAttribute]
+        [CustomBirthDate]
         public DateTime BirthDate { get; set; }
 
         /// <summary>

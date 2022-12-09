@@ -38,7 +38,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities
         /// Contains the exact time when the cause starts
         /// </summary>
         [Required]
-        [CustomCauseDateAttribute]
+        [CustomCauseDate]
         public DateTime Time { get; set; }
 
         /// <summary>

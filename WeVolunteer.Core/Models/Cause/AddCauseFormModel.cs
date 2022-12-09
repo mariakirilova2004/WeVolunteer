@@ -22,7 +22,7 @@ namespace WeVolunteer.Core.Models.Cause
         public string Place { get; set; }
 
         [Required]
-        [CustomBirthDateAttribute]
+        [CustomCauseDateAttribute]
         public DateTime Time { get; set; }
 
 
@@ -30,8 +30,7 @@ namespace WeVolunteer.Core.Models.Cause
         [StringLength(CauseMaxLengthDescription, ErrorMessage = "Must be between {2} and {1} characters long.", MinimumLength = CauseMinLengthDescription)]
         public string Description { get; set; }
 
-        [Required]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         [Required]
         public int CategoryId { get; set; }

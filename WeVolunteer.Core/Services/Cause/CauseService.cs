@@ -250,7 +250,7 @@ namespace WeVolunteer.Core.Services.Cause
             await this.repository.SaveChangesAsync();
         }
 
-        public async Task Edit(int id, string name, string place, DateTime time, string description, IFormFile image, int categoryId)
+        public async Task Edit(int id, string name, string place, DateTime time, string description, IFormFile? image, int categoryId)
         {
             var sanitalizer = new HtmlSanitizer();
 
@@ -265,18 +265,21 @@ namespace WeVolunteer.Core.Services.Cause
             cause.Description = sanitalizer.Sanitize(description);
             cause.CategoryId = categoryId;
 
-            var photo = new Infrastructure.Data.Entities.PhotoCause()
+            if(image != null)
             {
-                ImageFormat = image.ContentType,
-                CauseId = cause.Id,
-                Cause = cause
-            };
+                var photo = new Infrastructure.Data.Entities.PhotoCause()
+                {
+                    ImageFormat = image.ContentType,
+                    CauseId = cause.Id,
+                    Cause = cause
+                };
 
-            var memoryStream = new MemoryStream();
-            image.CopyTo(memoryStream);
-            photo.Image = memoryStream.ToArray();
+                var memoryStream = new MemoryStream();
+                image.CopyTo(memoryStream);
+                photo.Image = memoryStream.ToArray();
 
-            GetPhotosByCauseId(cause.Id).Add(photo);
+                GetPhotosByCauseId(cause.Id).Add(photo);
+            }
 
             this.repository.Update(cause);
             await this.repository.SaveChangesAsync();

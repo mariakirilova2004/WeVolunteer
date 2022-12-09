@@ -7,20 +7,31 @@ using System.Threading.Tasks;
 
 namespace WeVolunteer.Infrastructure.Attributes
 {
-    public class CustomCauseDateAttribute : ValidationAttribute
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    sealed public class CustomCauseDateAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        public override bool IsValid(object value)
         {
-            value = (DateTime)value;
-            // This assumes inclusivity, i.e. exactly six years ago is okay
-            if (DateTime.Now.AddDays(1).CompareTo(value) >= 0)
+            bool result = InTheRange((DateTime) value);
+            return result;
+        }
+
+        private bool InTheRange(DateTime value)
+        {
+            if (DateTime.Now.AddDays(1).CompareTo(value) <= 0)
             {
-                return ValidationResult.Success;
+                return true;
             }
             else
             {
-                return new ValidationResult("Enter a valid date.");
+                return false;
             }
         }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return "Enter a valid date.";
+        }
+
     }
 }
