@@ -26,8 +26,5 @@ namespace WeVolunteer.Tests.Mocks
             }
         }
 
-        public static IRepository Repository { get; } = new Repository(Instance);
-        public static ICategoryService CategoryService { get; } = new CategoryService(Repository);
-        public static IUserService UserService { get; } = new UserService(Repository);
     }
 }

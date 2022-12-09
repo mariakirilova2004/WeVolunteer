@@ -47,6 +47,12 @@ namespace WeVolunteer.Infrastructure.Data
 
                 SeedAdminUser();
                 SeedAdminOrganization();
+
+                modelBuilder.Entity<User>()
+                .HasData(this.userAdmin);
+
+                modelBuilder.Entity<Organization>()
+                .HasData(this.organizationAdmin);
             }
             
 
@@ -57,8 +63,7 @@ namespace WeVolunteer.Infrastructure.Data
             "JoinUserWithCause",
             j => j.HasOne<Cause>().WithMany().OnDelete(DeleteBehavior.Cascade),
             j => j.HasOne<User>().WithMany().OnDelete(DeleteBehavior.ClientCascade));
-            modelBuilder.Entity<User>()
-               .HasData(this.userAdmin);
+
 
             modelBuilder.Entity<Organization>()
                .HasKey(o => o.Id);
@@ -70,8 +75,7 @@ namespace WeVolunteer.Infrastructure.Data
                .HasMany(o => o.Causes)
                .WithOne(c => c.Organization)
                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Organization>()
-               .HasData(this.organizationAdmin);
+
 
             modelBuilder.Entity<PhotoOrganization>()
                .HasOne(po => po.Organization)

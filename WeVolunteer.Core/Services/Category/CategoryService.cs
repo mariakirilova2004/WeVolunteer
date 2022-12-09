@@ -17,7 +17,7 @@ namespace WeVolunteer.Core.Services.Category
 
         public bool CategoryExists(int categoryId)
         {
-            return this.repository.All<Infrastructure.Data.Entities.Category>(c => c.Id == categoryId).ToList().First() != null;
+            return this.repository.All<Infrastructure.Data.Entities.Category>(c => c.Id == categoryId).Count() > 0;
         }
 
         public int GetCategoryIdByCategoryName(string categoryName)

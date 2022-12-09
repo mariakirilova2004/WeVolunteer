@@ -29,6 +29,8 @@ namespace WeVolunteer.Core.Services.Organization
 
         string GetOrganizationNameById(int organizationId);
 
+        PhotoOrganization GetPhotoOrganizationByOrganizationId(int id);
+
         Task<bool> HasCauses(int organizationId);
         bool NameExists(string name);
     }

@@ -150,7 +150,7 @@ namespace WeVolunteer.Core.Services.Organization
         public async Task<bool> HasCauses(int organizationId)
         {
             var organization = await this.repository.GetByIdAsync<Infrastructure.Data.Entities.Account.Organization>(organizationId);
-            return organization.Causes.Count == 0;
+            return organization.Causes.Count != 0;
         }
 
         public PhotoOrganization GetPhotoOrganizationByOrganizationId(int id)

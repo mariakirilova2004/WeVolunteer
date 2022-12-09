@@ -21,13 +21,11 @@ namespace WeVolunteer.Core.Services.Cause
     {
         private readonly IRepository repository;
         private readonly IOrganizationService organizationService;
-        private readonly IOrganizationService categoryService;
 
-        public CauseService(IRepository _repository, IOrganizationService _organizationService, IOrganizationService _categoryService)
+        public CauseService(IRepository _repository, IOrganizationService _organizationService)
         {
             this.repository = _repository;
             this.organizationService = _organizationService;
-            this.categoryService = _categoryService;
         }
 
         public AllCausesQueryModel All(string category = "",
@@ -166,7 +164,7 @@ namespace WeVolunteer.Core.Services.Cause
             await this.repository.SaveChangesAsync();
         }
 
-        public CauseDetailsViewModel CauseDeatilsById(int id)
+        public CauseDetailsViewModel CauseDetailsById(int id)
         {
             var causes = this.repository.All<Infrastructure.Data.Entities.Cause, Infrastructure.Data.Entities.Account.User>(c => c.Users);
             var cause = causes.Where(c => c.Id == id).ToList()[0];

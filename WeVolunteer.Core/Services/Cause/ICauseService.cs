@@ -21,7 +21,7 @@ namespace WeVolunteer.Core.Services.Cause
 
         Task<bool> Exists(int id);
 
-        CauseDetailsViewModel CauseDeatilsById(int id);
+        CauseDetailsViewModel CauseDetailsById(int id);
 
         Task BecomePartAsync(int id, string userId);
 

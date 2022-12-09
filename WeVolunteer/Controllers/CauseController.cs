@@ -58,7 +58,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            var causeModel = this.causeService.CauseDeatilsById(id);
+            var causeModel = this.causeService.CauseDetailsById(id);
 
             if (information != causeModel.GetInformation())
             {
@@ -200,7 +200,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction("Mine", "Cause");
             }
 
-            var cause = this.causeService.CauseDeatilsById(id);
+            var cause = this.causeService.CauseDetailsById(id);
             var causeCategoryId = this.categoryService.GetCategoryIdByCategoryName(cause.CategoryName);
 
             var causeModel = new AddCauseFormModel()
@@ -270,7 +270,7 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction("Mine", "Cause");
             }
 
-            var cause = this.causeService.CauseDeatilsById(id);
+            var cause = this.causeService.CauseDetailsById(id);
 
 
             return View(cause);

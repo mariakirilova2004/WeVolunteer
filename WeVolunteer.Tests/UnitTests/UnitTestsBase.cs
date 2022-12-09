@@ -1,17 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Core.Extensions;
+using WeVolunteer.Core.Models.Photos;
 using WeVolunteer.Core.Services;
 using WeVolunteer.Core.Services.Category;
+using WeVolunteer.Core.Services.Cause;
+using WeVolunteer.Core.Services.Organization;
 using WeVolunteer.Core.Services.User;
 using WeVolunteer.Infrastructure.Data;
 using WeVolunteer.Infrastructure.Data.Entities;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
 using WeVolunteer.Tests.Mocks;
+using static WeVolunteer.Core.Extensions.ModelExtensions;
 
 namespace WeVolunteer.Tests.UnitTests
 {
@@ -21,15 +27,19 @@ namespace WeVolunteer.Tests.UnitTests
         protected IRepository repository;
         protected ICategoryService categoryService;
         protected IUserService userService;
+        protected ICauseService causeService;
+        protected IOrganizationService organizationService;
 
         [OneTimeSetUp]
 
         public void SetUpBase()
         {
             this.context = DatabaseMock.Instance;
-            this.repository = DatabaseMock.Repository;
-            this.categoryService = DatabaseMock.CategoryService;
-            this.userService = DatabaseMock.UserService;
+            this.repository = new Repository(this.context);
+            this.categoryService = new CategoryService(this.repository);
+            this.userService = new UserService(this.repository);
+            this.organizationService = new OrganizationService(this.repository, this.categoryService);
+            this.causeService = new CauseService(this.repository, this.organizationService);
             this.SeedDabase();
         }
 
@@ -44,6 +54,56 @@ namespace WeVolunteer.Tests.UnitTests
 
         private void SeedDabase()
         {
+            var photoCause1 = new PhotoCause()
+            {
+                Id = 1,
+                Image = new byte[200],
+                ImageFormat = "image/jpeg",
+                CauseId = 1,
+            };
+
+            this.context.PhotosCauses.Add(photoCause1);
+
+            var photoCause2 = new PhotoCause()
+            {
+                Id = 2,
+                Image = new byte[200],
+                ImageFormat = "image/jpeg",
+                CauseId = 2,
+            };
+
+            this.context.PhotosCauses.Add(photoCause2);
+
+            var photoCause3 = new PhotoCause()
+            {
+                Id = 3,
+                Image = new byte[200],
+                ImageFormat = "image/jpeg",
+                CauseId = 3,
+            };
+
+            this.context.PhotosCauses.Add(photoCause3);
+
+            var photoOrganization1 = new PhotoOrganization()
+            {
+                Id = 1,
+                Image = new byte[200],
+                ImageFormat = "image/jpeg",
+                OrganizationId = 1,
+            };
+
+            this.context.PhotosOrganizations.Add(photoOrganization1);
+
+            var photoOrganization2 = new PhotoOrganization()
+            {
+                Id = 2,
+                Image = new byte[200],
+                ImageFormat = "image/jpeg",
+                OrganizationId = 1,
+            };
+
+            this.context.PhotosOrganizations.Add(photoOrganization2);
+
             var category1 = new Category()
             {
                 Id = 1,
@@ -113,7 +173,7 @@ namespace WeVolunteer.Tests.UnitTests
             {
                 Id = 1,
                 Name = "Admin organization",
-                Headquarter = "Sofia, Bulgaria",
+                Headquarter = "Sofia, Ruse, Bulgaria",
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
                 Photos = new List<PhotoOrganization>(),
                 Causes = new List<Cause>(),
@@ -124,6 +184,19 @@ namespace WeVolunteer.Tests.UnitTests
             {
                 Id = 1,
                 Name = "Get in the network",
+                Place = "Sofia, Bulgaria",
+                Time = new DateTime(2001, 1, 1, 10, 0, 0),
+                OrganizationId = 1,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                Photos = new List<PhotoCause>(),
+                Users = new List<User>(),
+                CategoryId = 3
+            };
+
+            var cause3 = new Cause()
+            {
+                Id = 3,
+                Name = "Get in the network 2",
                 Place = "Sofia, Bulgaria",
                 Time = new DateTime(2001, 1, 1, 10, 0, 0),
                 OrganizationId = 1,
@@ -147,10 +220,13 @@ namespace WeVolunteer.Tests.UnitTests
             };
 
             this.context.Users.Add(this.User);
+            this.context.SaveChanges();
             this.context.Organizations.Add(this.Organization);
+            this.context.SaveChanges();
             this.context.Causes.Add(cause1);
             this.context.Causes.Add(cause2);
-
+            this.context.Causes.Add(cause3);
+            this.context.SaveChanges();
         }
     }
 }
