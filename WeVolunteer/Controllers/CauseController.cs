@@ -34,6 +34,8 @@ namespace WeVolunteer.Controllers
             this.categoryService = _categoryService;
             this.logger = _logger;
         }
+
+        [ResponseCache(Duration = 60)]
         public IActionResult All([FromQuery] AllCausesQueryModel query)
         {
             var queryResult = this.causeService.All(

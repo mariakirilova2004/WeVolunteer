@@ -20,6 +20,8 @@ builder.Services.AddDbContext<WeVolunteerDbContext>(options =>
 
 builder.Services.AddWeVolunteerServices();
 
+builder.Services.AddResponseCaching();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options =>
@@ -105,5 +107,6 @@ app.UseEndpoints(endpoints =>
     app.MapRazorPages();
 });
 
+app.UseResponseCaching();
 
 app.Run();
