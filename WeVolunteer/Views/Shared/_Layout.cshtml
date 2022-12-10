@@ -94,38 +94,20 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link click-scroll"  asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" asp-area="" asp-controller="We" asp-action="About">About</a>
+                            <a class="nav-link click-scroll"  asp-controller="We" asp-action="About">About</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" asp-controller="Cause" asp-action="All">Causes</a>
+                            <a class="nav-link click-scroll"  asp-controller="Cause" asp-action="All">Causes</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link click-scroll"  asp-controller="Organization" asp-action="All">Organizations</a>
                         </li>
-
-                       @*<li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_4">Volunteer</a>
-                        </li>*@
-
-                       @* <li class="nav-item dropdown">
-                            <a class="nav-link click-scroll dropdown-toggle" href="#section_5" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">News</a>
-
-                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                                <li><a class="dropdown-item" href="news.html">News Listing</a></li>
-
-                                <li><a class="dropdown-item" href="news-detail.html">News Detail</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" asp-controller="We" asp-action="Contact">Contact</a>
-                        </li>*@
 
                         <li class="nav-item ms-3">
                             <a class="nav-link custom-btn custom-border-btn btn" asp-area="" asp-controller="We" asp-action="Help">Help us</a>
@@ -155,13 +137,12 @@
 
 @*                            <li class="footer-menu-item"><a asp-controller="We" asp-action="Story" class="footer-menu-link">Our Story</a></li>
 *@
-                            <li class="footer-menu-item"><a asp-controller="Organizations" asp-action="All" class="footer-menu-link">Organizations</a></li>
+                            <li class="footer-menu-item"><a asp-controller="Organization" asp-action="All" class="footer-menu-link">Organizations</a></li>
 
                             <li class="footer-menu-item"><a asp-controller="Cause" asp-action="All" class="footer-menu-link">Causes</a></li>
                             
                             <partial name="_FooterPartial" />
                             
-                            <li class="footer-menu-item"><a asp-controller="We" asp-action="Partner" class="footer-menu-link">Partner with us</a></li>
                         </ul>
                     </div>
 

@@ -3,6 +3,6 @@
 @using WeVolunteer.Infrastructure.Data.Entities
 @inject SignInManager<User> SignInManager;
 @inject UserManager<User> UserManager;
-@if (SignInManager.IsSignedIn(User)){
+@if (!SignInManager.IsSignedIn(User)){
    <li class="footer-menu-item"><a asp-controller="User" asp-action="Login" class="footer-menu-link">Become a volunteer</a></li>
 }
