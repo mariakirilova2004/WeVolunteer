@@ -14,12 +14,12 @@
 
                 <div class="row">
                     <div class="col-lg-6 col-12">
-                        <input type="text" class="form-control" id="organization-name" autocomplete="name" aria-required="true" placeholder="Youth Association" asp-for="@Model.Name" />
+                        <input type="text" class="form-control" id="organization-name" autocomplete="name" aria-required="true" placeholder="Organization Name" asp-for="@Model.Name" />
                         <span asp-validation-for="@Model.Name" class="text-danger"></span>
                     </div>
 
                     <div class="col-lg-6 col-12">                        
-                        <input type="text" class="form-control" id="organization-headquarter" autocomplete="headquarter" aria-required="true" placeholder="CA, Las Vegas" asp-for="@Model.Headquarter" />
+                        <input type="text" class="form-control" id="organization-headquarter" autocomplete="headquarter" aria-required="true" placeholder="Place" asp-for="@Model.Headquarter" />
                         <span asp-validation-for="@Model.Headquarter" class="text-danger"></span>
                     </div>
                 </div>

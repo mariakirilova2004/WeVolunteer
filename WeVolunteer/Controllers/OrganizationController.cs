@@ -16,12 +16,17 @@ namespace WeVolunteer.Controllers
         private readonly IOrganizationService organizationService;
         private readonly ICategoryService categoryService;
         private readonly IUserService userService;
+        private readonly ILogger logger;
 
-        public OrganizationController(IOrganizationService _organizationService, ICategoryService _categoryService, IUserService _userService)
+        public OrganizationController(IOrganizationService _organizationService, 
+                                      ICategoryService _categoryService,
+                                      IUserService _userService,
+                                      ILogger<OrganizationController> _logger)
         {
             this.organizationService = _organizationService;
             this.categoryService = _categoryService;
             this.userService = _userService;
+            this.logger = _logger;
         }
 
         [HttpGet]
@@ -30,7 +35,7 @@ namespace WeVolunteer.Controllers
             if (this.organizationService.ExistsById(this.User.Id()))
             {
                 TempData[MessageConstant.WarningMessage] = "You are already an organization!";
-
+                this.logger.LogInformation("User {0} tried to become organization again!", this.User.Id());
                 return RedirectToAction(nameof(CauseController.All), "Cause");
             }
             return View();
@@ -44,7 +49,7 @@ namespace WeVolunteer.Controllers
             if (this.organizationService.ExistsById(userId))
             {
                 TempData[MessageConstant.WarningMessage] = "You are already an organization!";
-
+                this.logger.LogInformation("User {0} tried to become organization again!", this.User.Id());
                 return RedirectToAction(nameof(CauseController.All), "Cause");
             }
 
@@ -60,12 +65,19 @@ namespace WeVolunteer.Controllers
                 return View(model);
             }
 
-            await this.organizationService.CreateAsync(userId,
+            try
+            {
+                await this.organizationService.CreateAsync(userId,
                                             model.Name,
                                             model.Headquarter,
                                             model.Description,
                                             model.Image);
-
+            }
+            catch (Exception)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Unsuccessfully becoming an organization";
+            }
+            
             TempData[MessageConstant.SuccessMessage] = "You have become an organization.";
 
             return RedirectToAction(nameof(CauseController.All), "Cause");

@@ -11,6 +11,8 @@ using WeVolunteer.Core.Services.User;
 using WeVolunteer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<WeVolunteerDbContext>(options =>
@@ -102,5 +104,6 @@ app.UseEndpoints(endpoints =>
     pattern: "{controller=Home}/{action=Index}/{id?}");
     app.MapRazorPages();
 });
+
 
 app.Run();

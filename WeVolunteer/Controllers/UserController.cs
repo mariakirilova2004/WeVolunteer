@@ -7,6 +7,7 @@ using WeVolunteer.Core.Constants;
 using WeVolunteer.Core.Services.User;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
 using WeVolunteer.Core.Models.User;
+using WeVolunteer.Extensions;
 
 namespace WeVolunteer.Controllers
 {
@@ -16,15 +17,18 @@ namespace WeVolunteer.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IUserService userService;
+        private readonly ILogger logger;
 
         public UserController(
-            UserManager<User> _userManager,
-            SignInManager<User> _signInManager, 
-            IUserService _userService)
+               UserManager<User> _userManager,
+               SignInManager<User> _signInManager, 
+               IUserService _userService,
+               ILogger _logger)
         {
-            userManager = _userManager;
-            signInManager = _signInManager;
+            this.userManager = _userManager;
+            this.signInManager = _signInManager;
             this.userService = _userService;
+            this.logger = _logger;
         }
 
         [HttpGet]
@@ -34,6 +38,7 @@ namespace WeVolunteer.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 TempData[MessageConstant.WarningMessage] = "You have already registered!";
+                this.logger.LogInformation("User {0} tried to register again!", this.User.Id());
                 return RedirectToAction("Index", "Home");
             }
             var model = new UserRegisterViewModel();
@@ -93,6 +98,7 @@ namespace WeVolunteer.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 TempData[MessageConstant.WarningMessage] = "You have already logged in";
+                this.logger.LogInformation("User {0} tried to login again!", this.User.Id());
                 return RedirectToAction("Index", "Home");
             }
 
@@ -108,6 +114,7 @@ namespace WeVolunteer.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 TempData[MessageConstant.WarningMessage] = "You have already logged in";
+                this.logger.LogInformation("User {0} tried to login again!", this.User.Id());
                 return RedirectToAction("Index", "Home");
             }
 

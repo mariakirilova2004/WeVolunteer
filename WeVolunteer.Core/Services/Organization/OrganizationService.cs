@@ -1,5 +1,6 @@
 ﻿using Ganss.Xss;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,15 @@ namespace WeVolunteer.Core.Services.Organization
     {
         private readonly IRepository repository;
         private readonly ICategoryService categoryService;
+        private readonly ILogger logger;
 
-        public OrganizationService(IRepository _repository, ICategoryService _categoryService)
+        public OrganizationService(IRepository _repository,
+                                   ICategoryService _categoryService,
+                                   ILogger<OrganizationService> _logger)
         {
             this.repository = _repository;
             this.categoryService = _categoryService;
+            this.logger = _logger;
         }
 
         public AllOrganizationsQueryModel All(string category = null,
@@ -105,8 +110,16 @@ namespace WeVolunteer.Core.Services.Organization
 
             organization.Photos = new List<PhotoOrganization>() { photo };
 
-            await this.repository.AddAsync(organization);
-            await this.repository.SaveChangesAsync();
+            try
+            {
+                await this.repository.AddAsync(organization);
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                this.logger.LogInformation("{0} did not manage to become organization!", userId);
+                throw;
+            }
         }
 
         public bool ExistsById(string userId)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WeVolunteer.Controllers;
 using WeVolunteer.Core.Services;
 using WeVolunteer.Core.Services.Category;
 using WeVolunteer.Core.Services.Cause;
@@ -11,6 +12,11 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddWeVolunteerServices(this IServiceCollection services)
         {
+            services.AddScoped<ILogger, Logger<UserController>>();
+            services.AddScoped<ILogger, Logger<CauseController>>();
+            services.AddScoped<ILogger, Logger<OrganizationController>>();
+            services.AddScoped<ILogger, Logger<CauseService>>();
+            services.AddScoped<ILogger, Logger<OrganizationService>>();
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<ICauseService, CauseService>();
             services.AddScoped<IUserService, UserService>();

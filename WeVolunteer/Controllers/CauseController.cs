@@ -20,16 +20,19 @@ namespace WeVolunteer.Controllers
         private readonly IUserService userService;
         private readonly IOrganizationService organizationService;
         private readonly ICategoryService categoryService;
+        private readonly ILogger logger;
 
         public CauseController(ICauseService _causeService, 
                                IUserService _userService, 
                                IOrganizationService _organizationService,
-                               ICategoryService _categoryService)
+                               ICategoryService _categoryService,
+                               ILogger<CauseController> _logger)
         {
             this.causeService = _causeService;
             this.userService = _userService;
             this.organizationService = _organizationService;
             this.categoryService = _categoryService;
+            this.logger = _logger;
         }
         public IActionResult All([FromQuery] AllCausesQueryModel query)
         {
@@ -55,6 +58,7 @@ namespace WeVolunteer.Controllers
             if (!await this.causeService.Exists(id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
@@ -63,6 +67,7 @@ namespace WeVolunteer.Controllers
             if (information != causeModel.GetInformation())
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
@@ -76,6 +81,7 @@ namespace WeVolunteer.Controllers
             if (!this.organizationService.ExistsById(this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You should become an organization!";
+                this.logger.LogInformation("User {0} tried to add cause without being an organization!", this.User.Id());
                 return RedirectToAction("Become", "Organization");
             }
 
@@ -95,6 +101,7 @@ namespace WeVolunteer.Controllers
             if (!this.organizationService.ExistsById(userId) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You should become an organization!";
+                this.logger.LogInformation("User {0} tried to add cause without being an organization!", this.User.Id());
                 return RedirectToAction("Become", "Organization");
             }
 
@@ -110,13 +117,21 @@ namespace WeVolunteer.Controllers
                 return View(model);
             }
 
-            await this.causeService.CreateAsync(this.organizationService.GetOrganizationByUserId(userId).Id,
+            try
+            {
+                await this.causeService.CreateAsync(this.organizationService.GetOrganizationByUserId(userId).Id,
                                             model.Name,
                                             model.Place,
                                             model.Time,
                                             model.Description,
                                             model.Image,
                                             model.CategoryId);
+            }
+            catch (Exception)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Unsuccessful adding of a new cause";
+            }
+            
 
             TempData[MessageConstant.SuccessMessage] = "You have successfully made a cause!";
 
@@ -137,6 +152,7 @@ namespace WeVolunteer.Controllers
             if (! await this.causeService.Exists(id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
@@ -146,7 +162,15 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            await this.causeService.BecomePartAsync(id, this.User.Id());
+            try
+            {
+                await this.causeService.BecomePartAsync(id, this.User.Id());
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.WarningMessage] = "Unsuccessfully taking part";
+            }
+            
 
             return RedirectToAction(nameof(All));
         
@@ -191,12 +215,14 @@ namespace WeVolunteer.Controllers
             if (!await this.causeService.Exists(id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
             if (! await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                this.logger.LogInformation("User {0} tried to access cause without having permission to!", this.User.Id());
                 return RedirectToAction("Mine", "Cause");
             }
 
@@ -224,12 +250,14 @@ namespace WeVolunteer.Controllers
             if (!await this.causeService.Exists(id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
             if (!await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                this.logger.LogInformation("User {0} tried to access cause without having permission to!", this.User.Id());
                 return RedirectToAction("Mine", "Cause");
             }
 
@@ -247,9 +275,16 @@ namespace WeVolunteer.Controllers
                 return View(model);
             }
 
-            await this.causeService.Edit(id, model.Name, model.Place,
+            try
+            {
+                await this.causeService.Edit(id, model.Name, model.Place,
                                    model.Time, model.Description,
                                    model.Image, model.CategoryId);
+            }
+            catch (Exception)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Unsuccessful editing of a cause";
+            }
 
             return RedirectToAction(nameof(Details), new { id = id, information = model.GetInformation() });
         }
@@ -261,12 +296,14 @@ namespace WeVolunteer.Controllers
             if (!await this.causeService.Exists(id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
             if (!await this.causeService.IsMadeBy(id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                this.logger.LogInformation("User {0} tried to access cause without having permission to!", this.User.Id());
                 return RedirectToAction("Mine", "Cause");
             }
 
@@ -283,16 +320,25 @@ namespace WeVolunteer.Controllers
             if (!await this.causeService.Exists(model.Id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
             if (!await this.causeService.IsMadeBy(model.Id, this.User.Id()) && !this.User.IsAdmin())
             {
                 TempData[MessageConstant.WarningMessage] = "You do not have access to that cause!";
+                this.logger.LogInformation("User {0} tried to access cause without having permission to!", this.User.Id());
                 return RedirectToAction("Mine", "Cause");
             }
 
-            await this.causeService.Delete(model.Id);
+            try
+            {
+                 await this.causeService.Delete(model.Id);
+            }
+            catch (Exception)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Unsuccessful delete of a cause";
+            }
 
             return RedirectToAction(nameof(Mine));
         }
@@ -304,6 +350,7 @@ namespace WeVolunteer.Controllers
             if (!await this.causeService.Exists(model.Id))
             {
                 TempData[MessageConstant.WarningMessage] = "There is no such cause!";
+                this.logger.LogInformation("User {0} tried to access invalid cause!", this.User.Id());
                 return RedirectToAction(nameof(All));
             }
 
@@ -313,7 +360,14 @@ namespace WeVolunteer.Controllers
                 return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
             }
 
-            await this.causeService.Cancel(model.Id, this.User.Id());
+            try
+            {
+                await this.causeService.Cancel(model.Id, this.User.Id());
+            }
+            catch (Exception)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Unsuccessful cancelation of a participation";
+            }
 
             return RedirectToAction(nameof(All));
         }

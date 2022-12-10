@@ -12,6 +12,8 @@ using WeVolunteer.Core.Models.Photos;
 using Microsoft.AspNetCore.Http;
 using Ganss.Xss;
 using WeVolunteer.Core.Models.User;
+using Microsoft.Extensions.Logging;
+using WeVolunteer.Core.Constants;
 
 //using WeVolunteer.Core.Exceptions;
 
@@ -21,11 +23,14 @@ namespace WeVolunteer.Core.Services.Cause
     {
         private readonly IRepository repository;
         private readonly IOrganizationService organizationService;
+        private readonly ILogger logger;
 
-        public CauseService(IRepository _repository, IOrganizationService _organizationService)
+        public CauseService(IRepository _repository,
+                            IOrganizationService _organizationService, ILogger<CauseService> _logger)
         {
             this.repository = _repository;
             this.organizationService = _organizationService;
+            this.logger = _logger;
         }
 
         public AllCausesQueryModel All(string category = "",
@@ -161,7 +166,16 @@ namespace WeVolunteer.Core.Services.Cause
             this.repository.Update(user);
             this.repository.Update(cause);
 
-            await this.repository.SaveChangesAsync();
+            try
+            {
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                this.logger.LogInformation("{0} did not manage to take part!", userId);
+                throw;
+            }
+            
         }
 
         public CauseDetailsViewModel CauseDetailsById(int id)
@@ -246,8 +260,16 @@ namespace WeVolunteer.Core.Services.Cause
 
             cause.Photos = new List<PhotoCause>() { photo };
 
-            await this.repository.AddAsync(cause);
-            await this.repository.SaveChangesAsync();
+            try
+            {
+                await this.repository.AddAsync(cause);
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                this.logger.LogInformation("{0} did not manage to create cause!", organizationId);
+                throw;
+            }
         }
 
         public async Task Edit(int id, string name, string place, DateTime time, string description, IFormFile? image, int categoryId)
@@ -282,7 +304,16 @@ namespace WeVolunteer.Core.Services.Cause
             }
 
             this.repository.Update(cause);
-            await this.repository.SaveChangesAsync();
+
+            try
+            {
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                this.logger.LogInformation("{0} did not manage to be edited cause!", id);
+                throw;
+            }
         }
 
         public async Task Delete(int id)
@@ -292,7 +323,16 @@ namespace WeVolunteer.Core.Services.Cause
             cause.Users.Clear();
             cause.Organization = null;
             this.repository.Delete(cause);
-            await this.repository.SaveChangesAsync();
+
+            try
+            {
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                this.logger.LogInformation("{0} did not manage to be deleted cause!", id);
+                throw;
+            }
         }
 
         public async Task Cancel(int id, string userId)
@@ -301,7 +341,15 @@ namespace WeVolunteer.Core.Services.Cause
             var cause = causes.Where(c => c.Id == id && c.Users.Any(u => u.Id == userId)).ToList();
             var user = cause[0].Users.Find(u  => u.Id == userId);
             cause[0].Users.Remove(user);
-            await this.repository.SaveChangesAsync(); 
+            try
+            {
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                this.logger.LogInformation("{0} did not cancel participation in a cause!", userId);
+                throw;
+            }
         }
 
         public bool IsAlreadyPart(string userId, int id)
