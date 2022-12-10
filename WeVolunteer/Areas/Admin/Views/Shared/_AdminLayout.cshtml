@@ -1,0 +1,225 @@
+﻿<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>WeVolunteer</title>
+
+        <!-- CSS FILES -->        
+        <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="~/lib/toastr/toastr.min.css" rel="stylesheet">
+
+        <link href="~/bootstrap/css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="~/bootstrap/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+
+        <!-- Script to Load the main JS page-->
+        <script src="~/bootstrap/js/jquery.min.js"></script>
+
+    </head>
+    
+    <body id="section_1">
+       <partial name="_UserMessages" />
+        <header class="site-header">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-lg-8 col-12 d-flex flex-wrap">
+                        <p class="d-flex me-4 mb-0">
+                            <i class="bi-geo-alt me-2"></i>
+                            Ruse, Bulgaria
+                        </p>
+
+                        <p class="d-flex mb-0">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:mariakirilova2004@gmail.com">
+                                mariakirilova2004@gmail.com
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+                        <ul class="social-icon">
+                            @*<li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-twitter"></a>
+                            </li>*@
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-facebook"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-instagram"></a>
+                            </li>
+
+                            @*<li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-youtube"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-whatsapp"></a>
+                            </li>*@
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/bootstrap/images/logo.png" class="logo img-fluid" alt="WeVolunteer">
+                    <span>
+                        WeVolunteer
+                        <small>Non-profit Organization</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll"></a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" asp-controller="We" asp-action="About">About</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" asp-area="" asp-controller="Cause" asp-action="All">Causes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" asp-area=""  asp-controller="Organization" asp-action="All">Organizations</a>
+                        </li>
+
+                        <li class="nav-item ms-3">
+                            <a class="nav-link custom-btn custom-border-btn btn" asp-area="Admin" asp-controller="User" asp-action="All">Users</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <main> @RenderBody() </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12 mb-4">
+                        <img src="~/bootstrap/images/logo.png" class="logo img-fluid" alt="">
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Quick Links</h5>
+
+                        <ul class="footer-menu">
+
+@*                            <li class="footer-menu-item"><a asp-controller="We" asp-action="Story" class="footer-menu-link">Our Story</a></li>
+*@
+                            <li class="footer-menu-item"><a asp-controller="Organizations" asp-action="All" class="footer-menu-link">Organizations</a></li>
+
+                            <li class="footer-menu-item"><a asp-controller="Cause" asp-action="All" class="footer-menu-link">Causes</a></li>
+                            
+                            <partial name="_FooterPartial" />
+                            
+                            <li class="footer-menu-item"><a asp-controller="We" asp-action="Partner" class="footer-menu-link">Partner with us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mx-auto">
+                        <h5 class="site-footer-title mb-3">Contact Infomation</h5>
+
+                        <p class="text-white d-flex mb-2">
+                            <i class="bi-telephone me-2"></i>
+
+                            <a href="tel: 088-888-8888" class="site-footer-link">
+                                088-888-8888
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:mariakirilova2004@gmail.com" class="site-footer-link">
+                                mariakirilova2004@gmail.com
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex mt-3">
+                            <i class="bi-geo-alt me-2"></i>
+                            Ruse, Bulgaria
+                        </p>
+
+                        <a href="https://goo.gl/maps/d28FdCCkgSiXeHNV7" class="custom-btn btn mt-3">Get Direction</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-footer-bottom">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-7 col-12">
+                            <p class="copyright-text mb-0">Copyright © @DateTime.UtcNow.Year; <a href="#">WeVolunteer</a></p>
+                        </div>
+                        
+                        <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
+                            <ul class="social-icon">
+                                @*<li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-twitter"></a>
+                                </li>*@
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-facebook"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-instagram"></a>
+                                </li>
+
+                                @*<li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-linkedin"></a>
+                                </li>*@
+
+                                @*<li class="social-icon-item">
+                                    <a href="https://youtube.com/templatemo" class="social-icon-link bi-youtube"></a>
+                                </li>*@
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="~/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/bootstrap/js/jquery.sticky.js"></script>
+        <script src="~/bootstrap/js/click-scroll.js"></script>
+        <script src="~/bootstrap/js/counter.js"></script>
+        <script src="~/bootstrap/js/custom.js"></script>
+        <script src="~/lib/toastr/toastr.min.js" type="text/javascript"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

@@ -9,6 +9,10 @@ namespace WeVolunteer.Controllers
     {
         public IActionResult Index()
         {
+            if (this.User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin"});
+            }
             return View();
         }
 

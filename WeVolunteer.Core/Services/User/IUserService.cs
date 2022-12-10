@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeVolunteer.Core.Models.User;
 
 namespace WeVolunteer.Core.Services.User
 {
@@ -13,5 +14,6 @@ namespace WeVolunteer.Core.Services.User
         bool IdExists(string userId);
         public bool NameExists(string name);
 
+        IEnumerable<UserServiceModel> All();
     }
 }
