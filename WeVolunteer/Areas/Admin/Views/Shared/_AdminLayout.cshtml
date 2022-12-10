@@ -16,7 +16,7 @@
 
         <link href="~/bootstrap/css/bootstrap-icons.css" rel="stylesheet">
 
-        <link href="~/bootstrap/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+        <link href="~/bootstrap/css/templatemo-kind-heart-charity.css" rel="stylesheet" asp-append-version="true">
 
         <!-- Script to Load the main JS page-->
         <script src="~/bootstrap/js/jquery.min.js"></script>
@@ -137,13 +137,12 @@
 
 @*                            <li class="footer-menu-item"><a asp-controller="We" asp-action="Story" class="footer-menu-link">Our Story</a></li>
 *@
-                            <li class="footer-menu-item"><a asp-controller="Organizations" asp-action="All" class="footer-menu-link">Organizations</a></li>
+                            <li class="footer-menu-item"><a asp-area="" asp-controller="Organization" asp-action="All" class="footer-menu-link">Organizations</a></li>
 
-                            <li class="footer-menu-item"><a asp-controller="Cause" asp-action="All" class="footer-menu-link">Causes</a></li>
+                            <li class="footer-menu-item"><a asp-area="" asp-controller="Cause" asp-action="All" class="footer-menu-link">Causes</a></li>
                             
-                            <partial name="_FooterPartial" />
                             
-                            <li class="footer-menu-item"><a asp-controller="We" asp-action="Partner" class="footer-menu-link">Partner with us</a></li>
+                            
                         </ul>
                     </div>
 

@@ -8,6 +8,7 @@ using WeVolunteer.Core.Services.User;
 using WeVolunteer.Infrastructure.Data.Entities.Account;
 using WeVolunteer.Core.Models.User;
 using WeVolunteer.Extensions;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace WeVolunteer.Controllers
 {
@@ -18,17 +19,20 @@ namespace WeVolunteer.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IUserService userService;
         private readonly ILogger logger;
+        private readonly IMemoryCache cache;
 
         public UserController(
                UserManager<User> _userManager,
                SignInManager<User> _signInManager, 
                IUserService _userService,
-               ILogger _logger)
+               ILogger _logger,
+               IMemoryCache _cache)
         {
             this.userManager = _userManager;
             this.signInManager = _signInManager;
             this.userService = _userService;
             this.logger = _logger;
+            this.cache = _cache;
         }
 
         [HttpGet]
@@ -132,6 +136,7 @@ namespace WeVolunteer.Controllers
 
                 if (result.Succeeded)
                 {
+                    this.cache.Remove("UsersCacheKey");
                     TempData[MessageConstant.SuccessMessage] = "You have successfully logged in";
                     return RedirectToAction("Index", "Home");
                 }
