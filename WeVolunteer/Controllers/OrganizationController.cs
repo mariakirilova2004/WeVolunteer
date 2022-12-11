@@ -75,6 +75,7 @@ namespace WeVolunteer.Controllers
             }
             catch (Exception)
             {
+                this.logger.LogInformation("{0} did not manage to become organization!", userId);
                 TempData[MessageConstant.ErrorMessage] = "Unsuccessfully becoming an organization";
             }
             

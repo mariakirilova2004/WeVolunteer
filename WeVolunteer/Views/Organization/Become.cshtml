@@ -30,7 +30,7 @@
                 </div>                                
 
                 <div class="col-lg-12 col-12">   
-                    <input asp-for="Image" class="form-control" accept="image/*" />
+                    <input asp-for="Image" class="form-control" accept="image/*" required/>
                     <span asp-validation-for="@Model.Image" class="text-danger"></span>
                 </div>
 

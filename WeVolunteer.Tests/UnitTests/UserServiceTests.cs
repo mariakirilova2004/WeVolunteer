@@ -20,6 +20,15 @@ namespace WeVolunteer.Tests.UnitTests
         }
 
         [Test]
+        public void UserForget_ShouldDeleteUser()
+        {
+            Assert.IsTrue(this.userService.Forget("proba").IsCompleted);
+            this.userService.Forget(this.User.Id);
+            Assert.IsTrue(this.context.Users.Find(this.User.Id) == null);
+            Assert.IsTrue(this.userService.Forget(this.User.Id).IsCompleted);
+        }
+
+        [Test]
         public void EmailExists_ShouldReturnCorrectBoolValue()
         {
 
@@ -35,7 +44,7 @@ namespace WeVolunteer.Tests.UnitTests
         {
 
             var result1 = this.userService.IdExists(this.User.Id);
-            var result2 = this.userService.IdExists("bdb19aab - d6b3 - 4329 - abd0 - 16a8b1c02f3f");
+            var result2 = this.userService.IdExists("proba");
 
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
@@ -50,6 +59,16 @@ namespace WeVolunteer.Tests.UnitTests
 
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
+        }
+
+        [Test]
+        public void All_ShouldReturnCorrectUserCountValue()
+        {
+
+            var result = this.userService.All();
+
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsTrue(result.First().Id == "deal12856-c198-4129-b3f3-b893d8395082");
         }
     }
 }

@@ -40,6 +40,7 @@ namespace WeVolunteer.Infrastructure.Data.Entities.Account
         [CustomBirthDate]
         public DateTime BirthDate { get; set; }
 
+
         /// <summary>
         /// Contains the list of the causes of the user
         /// </summary>

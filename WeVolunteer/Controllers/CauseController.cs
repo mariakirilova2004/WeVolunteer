@@ -131,6 +131,7 @@ namespace WeVolunteer.Controllers
             }
             catch (Exception)
             {
+                this.logger.LogInformation("User {0} did not manage to create cause!", this.User.Id());
                 TempData[MessageConstant.ErrorMessage] = "Unsuccessful adding of a new cause";
             }
             
@@ -170,6 +171,7 @@ namespace WeVolunteer.Controllers
             }
             catch (Exception ex)
             {
+                this.logger.LogInformation("{0} did not manage to take part!", this.User.Id());
                 TempData[MessageConstant.WarningMessage] = "Unsuccessfully taking part";
             }
             
@@ -285,6 +287,7 @@ namespace WeVolunteer.Controllers
             }
             catch (Exception)
             {
+                this.logger.LogInformation("Cause {0} did not manage to be edited!", id);
                 TempData[MessageConstant.ErrorMessage] = "Unsuccessful editing of a cause";
             }
 
@@ -339,6 +342,7 @@ namespace WeVolunteer.Controllers
             }
             catch (Exception)
             {
+                this.logger.LogInformation("Cause {0} did not manage to be deleted!", model.Id);
                 TempData[MessageConstant.ErrorMessage] = "Unsuccessful delete of a cause";
             }
 
@@ -368,6 +372,7 @@ namespace WeVolunteer.Controllers
             }
             catch (Exception)
             {
+                this.logger.LogInformation("{0} did not cancel participation in a cause!", this.User.Id());
                 TempData[MessageConstant.ErrorMessage] = "Unsuccessful cancelation of a participation";
             }
 

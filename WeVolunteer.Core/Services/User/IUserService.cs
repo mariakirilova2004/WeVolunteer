@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace WeVolunteer.Core.Services.User
         public bool EmailExists(string email);
         bool IdExists(string userId);
         public bool NameExists(string name);
-
         IEnumerable<UserServiceModel> All();
+        Task Forget(string Id);
     }
 }

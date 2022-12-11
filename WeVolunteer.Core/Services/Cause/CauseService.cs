@@ -23,14 +23,12 @@ namespace WeVolunteer.Core.Services.Cause
     {
         private readonly IRepository repository;
         private readonly IOrganizationService organizationService;
-        private readonly ILogger logger;
 
         public CauseService(IRepository _repository,
-                            IOrganizationService _organizationService, ILogger<CauseService> _logger)
+                            IOrganizationService _organizationService)
         {
             this.repository = _repository;
             this.organizationService = _organizationService;
-            this.logger = _logger;
         }
 
         public AllCausesQueryModel All(string category = "",
@@ -172,7 +170,6 @@ namespace WeVolunteer.Core.Services.Cause
             }
             catch (Exception)
             {
-                this.logger.LogInformation("{0} did not manage to take part!", userId);
                 throw;
             }
             
@@ -232,7 +229,7 @@ namespace WeVolunteer.Core.Services.Cause
                                       string place,
                                       DateTime time, 
                                       string description,
-                                      IFormFile image, 
+                                      IFormFile? image, 
                                       int categoryId)
         {
             var sanitalizer = new HtmlSanitizer();
@@ -247,18 +244,25 @@ namespace WeVolunteer.Core.Services.Cause
                 CategoryId = categoryId
             };
 
-            var photo = new Infrastructure.Data.Entities.PhotoCause()
+            if(image != null)
             {
-                ImageFormat = image.ContentType,
-                CauseId = cause.Id,
-                Cause = cause
-            };
+                var photo = new Infrastructure.Data.Entities.PhotoCause()
+                {
+                    ImageFormat = image.ContentType,
+                    CauseId = cause.Id,
+                    Cause = cause
+                };
 
-            var memoryStream = new MemoryStream();
-            image.CopyTo(memoryStream);
-            photo.Image = memoryStream.ToArray();
+                var memoryStream = new MemoryStream();
+                image.CopyTo(memoryStream);
+                photo.Image = memoryStream.ToArray();
 
-            cause.Photos = new List<PhotoCause>() { photo };
+                cause.Photos = new List<PhotoCause>() { photo };
+            }
+            else
+            {
+                cause.Photos = new List<PhotoCause>();
+            }
 
             try
             {
@@ -267,7 +271,6 @@ namespace WeVolunteer.Core.Services.Cause
             }
             catch (Exception)
             {
-                this.logger.LogInformation("{0} did not manage to create cause!", organizationId);
                 throw;
             }
         }
@@ -311,7 +314,6 @@ namespace WeVolunteer.Core.Services.Cause
             }
             catch (Exception)
             {
-                this.logger.LogInformation("{0} did not manage to be edited cause!", id);
                 throw;
             }
         }
@@ -330,7 +332,6 @@ namespace WeVolunteer.Core.Services.Cause
             }
             catch (Exception)
             {
-                this.logger.LogInformation("{0} did not manage to be deleted cause!", id);
                 throw;
             }
         }
@@ -347,7 +348,6 @@ namespace WeVolunteer.Core.Services.Cause
             }
             catch (Exception)
             {
-                this.logger.LogInformation("{0} did not cancel participation in a cause!", userId);
                 throw;
             }
         }

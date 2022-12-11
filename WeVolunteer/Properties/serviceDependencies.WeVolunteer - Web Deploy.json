@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/wevolunteerdbserver/databases/WeVolunteer.Web_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:WeVolunteerDbContextConnection"
+    }
+  }
+}

@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Logging;
+using NUnit.Framework;
 using System.Linq;
+using System.Threading.Tasks;
 using WeVolunteer.Core.Services.Cause;
 
 namespace WeVolunteer.Tests.UnitTests
@@ -26,6 +28,35 @@ namespace WeVolunteer.Tests.UnitTests
 
             Assert.AreEqual(3, result1);
             Assert.AreEqual(0, result2);
+        }
+
+        [Test]
+        public async Task UserCauseCreate_ShouldCreateCorrectCauses()
+        {
+            await this.causeService.CreateAsync(4,
+                                                "Proba", 
+                                                "Varna", 
+                                                System.DateTime.Now.AddYears(1),
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lectus lacus, malesuada sed leo in, luctus pretium leo. Morbi sed metus ex. Nunc ullamcorper lacinia commodo. Maecenas sit amet accumsan odio, quis varius nisi. Quisque porttitor tempus rhoncus. Nullam fermentum finibus metus, in malesuada quam sagittis sit amet. Duis vel finibus nisl. Nulla id neque sapien. Fusce eget ligula quis nibh convallis volutpat ac at felis. Sed a elit augue. Suspendisse sit amet sagittis arcu.",
+                                                null,
+                                                2);
+
+            Assert.AreEqual(3, this.repository.All<Infrastructure.Data.Entities.Cause>().Count());
+        }
+
+        [Test]
+        public void Edit_ShouldEditCorrectCauses()
+        {
+            this.causeService.Edit(2,
+                                   "Proba PROBA",
+                                   "Varna",
+                                   System.DateTime.Now.AddYears(1),
+                                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lectus lacus, malesuada sed leo in, luctus pretium leo. Morbi sed metus ex. Nunc ullamcorper lacinia commodo. Maecenas sit amet accumsan odio, quis varius nisi. Quisque porttitor tempus rhoncus. Nullam fermentum finibus metus, in malesuada quam sagittis sit amet. Duis vel finibus nisl. Nulla id neque sapien. Fusce eget ligula quis nibh convallis volutpat ac at felis. Sed a elit augue. Suspendisse sit amet sagittis arcu.",
+                                   null,
+                                   2);
+
+            Assert.AreEqual(2, this.repository.All<Infrastructure.Data.Entities.Cause>().Count());
+            Assert.IsTrue(this.repository.GetByIdAsync<Infrastructure.Data.Entities.Cause>(2) != null);
         }
 
         [Test]

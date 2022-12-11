@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Linq;
+using System.Threading.Tasks;
 using WeVolunteer.Core.Services.Organization;
 
 namespace WeVolunteer.Tests.UnitTests
@@ -23,9 +24,31 @@ namespace WeVolunteer.Tests.UnitTests
 
             var result1 = this.organizationService.All(null, searchTerm1, 1, 1).Organizations.FirstOrDefault();
             var result2 = this.organizationService.All(null, searchTerm2, 1, 1).Organizations.FirstOrDefault();
+            var result3 = this.organizationService.All(null, searchTerm1, 1, 1);
+            var result4 = this.organizationService.All(null, searchTerm1, 2, 1);
 
             Assert.AreEqual(this.Organization.Id, result1.Id);
             Assert.AreEqual(null, result2);
+            Assert.AreEqual(1, result3.TotalOrganizationsCount);
+            Assert.AreEqual(0, result4.Organizations.Count());
+        }
+
+        [Test]
+        public async Task Create_ShouldReturnCorrectOrganizations()
+        {
+
+            await this.organizationService.CreateAsync("kspjidshfiugiuygeiuhjnasd", 
+                                                       "We Help", 
+                                                       "Las Vegas", 
+                                                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lectus lacus, malesuada sed leo in, luctus pretium leo. Morbi sed metus ex. Nunc ullamcorper lacinia commodo. Maecenas sit amet accumsan odio, quis varius nisi. Quisque porttitor tempus rhoncus. Nullam fermentum finibus metus, in malesuada quam sagittis sit amet. Duis vel finibus nisl. Nulla id neque sapien. Fusce eget ligula quis nibh convallis volutpat ac at felis. Sed a elit augue. Suspendisse sit amet sagittis arcu. Duis volutpat lorem nibh, vitae convallis nunc sodales eu. Phasellus tristique, metus et ult",
+                                                       null);
+
+            Assert.AreEqual(2, this.repository.All<Infrastructure.Data.Entities.Account.Organization>().Count());
+            Assert.IsFalse(this.organizationService.CreateAsync("kspjidshfiugiuygeiuhjnasd",
+                                                       "We Help",
+                                                       "Las Vegas",
+                                                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lectus lacus, malesuada sed leo in, luctus pretium leo. Morbi sed metus ex. Nunc ullamcorper lacinia commodo. Maecenas sit amet accumsan odio, quis varius nisi. Quisque porttitor tempus rhoncus. Nullam fermentum finibus metus, in malesuada quam sagittis sit amet. Duis vel finibus nisl. Nulla id neque sapien. Fusce eget ligula quis nibh convallis volutpat ac at felis. Sed a elit augue. Suspendisse sit amet sagittis arcu. Duis volutpat lorem nibh, vitae convallis nunc sodales eu. Phasellus tristique, metus et ult",
+                                                       null).IsCanceled);
         }
 
         //[Test]

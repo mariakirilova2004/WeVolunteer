@@ -18,15 +18,12 @@ namespace WeVolunteer.Core.Services.Organization
     {
         private readonly IRepository repository;
         private readonly ICategoryService categoryService;
-        private readonly ILogger logger;
 
         public OrganizationService(IRepository _repository,
-                                   ICategoryService _categoryService,
-                                   ILogger<OrganizationService> _logger)
+                                   ICategoryService _categoryService)
         {
             this.repository = _repository;
             this.categoryService = _categoryService;
-            this.logger = _logger;
         }
 
         public AllOrganizationsQueryModel All(string category = null,
@@ -97,18 +94,25 @@ namespace WeVolunteer.Core.Services.Organization
                 Causes = new List<Infrastructure.Data.Entities.Cause>()
             };
 
-            var photo = new Infrastructure.Data.Entities.PhotoOrganization()
+            if(image != null)
             {
-                ImageFormat = image.ContentType,
-                OrganizationId = organization.Id,
-                Organization = organization
-            };
+                var photo = new Infrastructure.Data.Entities.PhotoOrganization()
+                {
+                    ImageFormat = image.ContentType,
+                    OrganizationId = organization.Id,
+                    Organization = organization
+                };
 
-            var memoryStream = new MemoryStream();
-            image.CopyTo(memoryStream);
-            photo.Image = memoryStream.ToArray();
+                var memoryStream = new MemoryStream();
+                image.CopyTo(memoryStream);
+                photo.Image = memoryStream.ToArray();
 
-            organization.Photos = new List<PhotoOrganization>() { photo };
+                organization.Photos = new List<PhotoOrganization>() { photo };
+            }
+            else
+            {
+                organization.Photos = new List<PhotoOrganization>();
+            }
 
             try
             {
@@ -117,7 +121,6 @@ namespace WeVolunteer.Core.Services.Organization
             }
             catch (Exception)
             {
-                this.logger.LogInformation("{0} did not manage to become organization!", userId);
                 throw;
             }
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +15,12 @@ namespace WeVolunteer.Core.Services.User
     public class UserService : IUserService
     {
         private readonly IRepository repository;
+
         public UserService(IRepository _repository)
         {
             this.repository = _repository;
         }
 
-        //SHOULD BE TESTED
         public IEnumerable<UserServiceModel> All()
         {
             var allUsers = new List<UserServiceModel>();
@@ -26,7 +28,7 @@ namespace WeVolunteer.Core.Services.User
             var organizations = this.repository
                     .All<Infrastructure.Data.Entities.Account.Organization>();
 
-            allUsers = this.repository.All<Infrastructure.Data.Entities.Account.User>()
+            allUsers = this.repository.All<Infrastructure.Data.Entities.Account.User>(u => u.Email != "")
                                                .Select(u => new UserServiceModel
                                                {
                                                    Id = u.Id,
@@ -55,6 +57,29 @@ namespace WeVolunteer.Core.Services.User
         public bool EmailExists(string email)
         {
             return this.repository.All<Infrastructure.Data.Entities.Account.User>(u => u.Email == email).ToList().Count > 0;
+        }
+
+        public async Task Forget(string Id)
+        {
+            try
+            {
+                var user = this.repository.All<Infrastructure.Data.Entities.Account.User, Infrastructure.Data.Entities.Cause>(u => u.Causes).Where(u => u.Id == Id).ToList().First();
+
+                for (int i = 0; i < user.Causes.Count; i++)
+                {
+                    user.Causes[i].Users.Remove(user);
+                }
+
+                user.Causes = new List<Infrastructure.Data.Entities.Cause>();
+
+                await this.repository.DeleteAsync<Infrastructure.Data.Entities.Account.User>(Id);
+
+                await this.repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public bool IdExists(string userId)

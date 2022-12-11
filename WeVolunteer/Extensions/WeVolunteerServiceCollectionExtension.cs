@@ -15,8 +15,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ILogger, Logger<UserController>>();
             services.AddScoped<ILogger, Logger<CauseController>>();
             services.AddScoped<ILogger, Logger<OrganizationController>>();
+            services.AddScoped<ILogger, Logger<WeVolunteer.Areas.Admin.Controllers.UserController>>();
             services.AddScoped<ILogger, Logger<CauseService>>();
             services.AddScoped<ILogger, Logger<OrganizationService>>();
+            services.AddScoped<ILogger, Logger<UserService>>();
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<ICauseService, CauseService>();
             services.AddScoped<IUserService, UserService>();
