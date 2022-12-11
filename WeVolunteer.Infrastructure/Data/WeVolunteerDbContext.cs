@@ -136,7 +136,7 @@ namespace WeVolunteer.Infrastructure.Data
         {
             this.organizationAdmin = new Organization()
             {
-                Id = 2,
+                Id = 1,
                 Name = "Admin organization",
                 Headquarter = "Sofia, Bulgaria",
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",

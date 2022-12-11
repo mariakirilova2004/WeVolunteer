@@ -289,6 +289,11 @@ namespace WeVolunteer.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "deal12856 - c198 - 4129 - b3f3 - b893d8395082", 0, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "3b07baf1-09a2-4774-bf65-22654e98c8d3", "user@mail.com", false, "User", "Userov", false, null, "USER@MAIL.COM", "USERQ", "AQAAAAEAACcQAAAAEArcIaL4h0zTQ/dC7TXT6Z5jW4cojPPtBNKYjAw50D9WVie59hS6GoKBBYPBDxepFg==", "0888888888", false, "d74243f4-7682-4b05-a1e9-b5b82a9e8074", false, "USERQ" });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
@@ -299,6 +304,11 @@ namespace WeVolunteer.Infrastructure.Migrations
                     { 4, "Health Care, Holistic Centers", "Health Care" },
                     { 5, "Hostel/Guest House Administration, Digital Marketing, SEO and Web Development", "Tourism" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Organizations",
+                columns: new[] { "Id", "Description", "Headquarter", "Name", "UserId" },
+                values: new object[] { 2, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", "Sofia, Bulgaria", "Admin organization", "deal12856 - c198 - 4129 - b3f3 - b893d8395082" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

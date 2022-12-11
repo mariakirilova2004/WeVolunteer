@@ -50,6 +50,7 @@ namespace WeVolunteer.Core.Services.Organization
 
 
             var organizations = organizationsQuery
+                .Skip(1)
                 .Skip((currentPage - 1) * organizationsPerPage)
                 .Take(organizationsPerPage)
                 .Select(o => new OrganizationViewModel

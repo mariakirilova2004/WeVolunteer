@@ -12,8 +12,8 @@ using WeVolunteer.Infrastructure.Data;
 namespace WeVolunteer.Infrastructure.Migrations
 {
     [DbContext(typeof(WeVolunteerDbContext))]
-    [Migration("20221201170411_AddedAdmin")]
-    partial class AddedAdmin
+    [Migration("20221211202357_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -216,7 +216,7 @@ namespace WeVolunteer.Infrastructure.Migrations
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
                             Headquarter = "Sofia, Bulgaria",
                             Name = "Admin organization",
-                            UserId = "deal12856-c198-4129-b3f3-b893d8395082"
+                            UserId = "deal12856 - c198 - 4129 - b3f3 - b893d8395082"
                         });
                 });
 
@@ -302,10 +302,10 @@ namespace WeVolunteer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "deal12856-c198-4129-b3f3-b893d8395082",
+                            Id = "deal12856 - c198 - 4129 - b3f3 - b893d8395082",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "0124e86e-b185-422a-a662-d88c325712b7",
+                            ConcurrencyStamp = "3b07baf1-09a2-4774-bf65-22654e98c8d3",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -313,10 +313,10 @@ namespace WeVolunteer.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@MAIL.COM",
                             NormalizedUserName = "USERQ",
-                            PasswordHash = "AQAAAAEAACcQAAAAENwN9lryqkaw6SVRzRkWp5LN6YNVIUXrxEgBbZMa1Zx7+znIOLcufa2bA6lh3el7ng==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEArcIaL4h0zTQ/dC7TXT6Z5jW4cojPPtBNKYjAw50D9WVie59hS6GoKBBYPBDxepFg==",
                             PhoneNumber = "0888888888",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "86cc400f-b22f-4fea-a914-2f6f3c93bf8a",
+                            SecurityStamp = "d74243f4-7682-4b05-a1e9-b5b82a9e8074",
                             TwoFactorEnabled = false,
                             UserName = "USERQ"
                         });
