@@ -38,7 +38,10 @@ namespace WeVolunteer.Controllers
                 this.logger.LogInformation("User {0} tried to become organization again!", this.User.Id());
                 return RedirectToAction(nameof(CauseController.All), "Cause");
             }
-            return View();
+
+            BecomeOrganizationFormModel model = new BecomeOrganizationFormModel();
+
+            return View(model);
         }
 
         [HttpPost]
