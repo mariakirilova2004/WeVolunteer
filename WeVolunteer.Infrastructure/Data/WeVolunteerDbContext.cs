@@ -38,11 +38,11 @@ namespace WeVolunteer.Infrastructure.Data
         {
             if(this.seedDb)
             {
+                modelBuilder.ApplyConfiguration(new CategoryConfiguration());
                 //modelBuilder.ApplyConfiguration(new UserConfiguration());
                 //modelBuilder.ApplyConfiguration(new PhotoCauseConfiguration());
                 //modelBuilder.ApplyConfiguration(new PhotoOrganizationConfiguration());
                 //modelBuilder.ApplyConfiguration(new OrganizationConfiguration());
-                modelBuilder.ApplyConfiguration(new CategoryConfiguration());
                 //modelBuilder.ApplyConfiguration(new CauseConfiguration());
 
                 SeedAdminUser();
@@ -111,6 +111,8 @@ namespace WeVolunteer.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        //Hard coded data for the Admin role
+
         void SeedAdminUser()
         {
             var hasher = new PasswordHasher<User>();
@@ -147,3 +149,4 @@ namespace WeVolunteer.Infrastructure.Data
         }
     }
 }
+

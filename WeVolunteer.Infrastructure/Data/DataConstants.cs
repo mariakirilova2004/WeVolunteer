@@ -8,6 +8,7 @@ namespace WeVolunteer.Infrastructure.Data
 {
     public class DataConstants
     {
+        //Constants, which are used for the implementation of the User
         public class User
         {
             public const int UserMinLengthFirstName = 3;
@@ -25,6 +26,7 @@ namespace WeVolunteer.Infrastructure.Data
             public const int UserLengthPhoneNumber = 10;
         }
 
+        //Constants, which are used for the implementation of the Cause
         public class Cause
         {
             public const int CauseMinLengthName = 5;
@@ -37,6 +39,7 @@ namespace WeVolunteer.Infrastructure.Data
             public const int CauseMaxLengthDescription = 400;
         }
 
+        //Constants, which are used for the implementation of the Organization
         public class Organization
         {
             public const int OrganizationMinLengthName = 5;
@@ -49,6 +52,7 @@ namespace WeVolunteer.Infrastructure.Data
             public const int OrganizationMaxLengthDescription = 400;
         }
 
+        //Constants, which are used for the implementation of the Category
         public class Category
         {
             public const int CategoryMinLengthName = 5;

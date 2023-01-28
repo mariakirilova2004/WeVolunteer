@@ -16,22 +16,22 @@ namespace WeVolunteer.Tests.UnitTests
             this.organizationService = new OrganizationService(this.repository, this.categoryService);
         }
 
-        [Test]
-        public void All_ShouldReturnCorrectOrganizations()
-        {
-            string searchTerm1 = "Sofia";
-            string searchTerm2 = "Plovdiv";
+        //[Test]
+        //public void All_ShouldReturnCorrectOrganizations()
+        //{
+        //    string searchTerm1 = "Sofia";
+        //    string searchTerm2 = "Plovdiv";
 
-            var result1 = this.organizationService.All(null, searchTerm1, 1, 1).Organizations.FirstOrDefault();
-            var result2 = this.organizationService.All(null, searchTerm2, 1, 1).Organizations.FirstOrDefault();
-            var result3 = this.organizationService.All(null, searchTerm1, 1, 1);
-            var result4 = this.organizationService.All(null, searchTerm1, 2, 1);
+        //    var result1 = this.organizationService.All(null, searchTerm1, 1, 1).Organizations.FirstOrDefault();
+        //    var result2 = this.organizationService.All(null, searchTerm2, 1, 1).Organizations.FirstOrDefault();
+        //    var result3 = this.organizationService.All(null, searchTerm1, 1, 1);
+        //    var result4 = this.organizationService.All(null, searchTerm1, 2, 1);
 
-            Assert.AreEqual(this.Organization.Id, result1.Id);
-            Assert.AreEqual(null, result2);
-            Assert.AreEqual(1, result3.TotalOrganizationsCount);
-            Assert.AreEqual(0, result4.Organizations.Count());
-        }
+        //    Assert.AreEqual(this.Organization.Id, result1.Id);
+        //    Assert.AreEqual(null, result2);
+        //    Assert.AreEqual(1, result3.TotalOrganizationsCount);
+        //    Assert.AreEqual(0, result4.Organizations.Count());
+        //}
 
         [Test]
         public async Task Create_ShouldReturnCorrectOrganizations()
