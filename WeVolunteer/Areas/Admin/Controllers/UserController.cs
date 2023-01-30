@@ -38,6 +38,8 @@ namespace WeVolunteer.Areas.Admin.Controllers
             return View(users);
         }
 
+        //Forget the data of the user but the id remains
+
         [HttpPost]
         public async Task<IActionResult> Forget(string Id)
         {
